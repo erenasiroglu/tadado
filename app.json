@@ -9,9 +9,21 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "fonts": ["./assets/fonts/Inter-VariableFont_opsz,wght.ttf"]
     },
     "android": {
+      "fonts": [
+        {
+          "fontFamily": "Inter",
+          "fontDefinitions": [
+            {
+              "path": "./assets/fonts/Inter-VariableFont_opsz,wght.ttf",
+              "weight": 700
+            }
+          ]
+        }
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -33,7 +45,9 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true
