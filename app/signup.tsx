@@ -1,11 +1,8 @@
 import { supabase } from "@/lib/supabase";
 import { router } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { VideoView, useVideoPlayer } from "expo-video";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Alert,
-  Dimensions,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -16,72 +13,61 @@ import {
   View,
 } from "react-native";
 
-const { width } = Dimensions.get("window");
-
-SplashScreen.preventAutoHideAsync().catch(() => {});
-
-function SplashVideoScreen({ onFinish }: { onFinish: () => void }) {
-  const player = useVideoPlayer(
-    require("@/assets/animations/tadado.mp4"),
-    (player) => {
-      player.loop = true;
-      player.play();
-    }
-  );
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      SplashScreen.hideAsync().finally(() => onFinish());
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <View style={styles.loadingContainer}>
-      <VideoView
-        style={styles.video}
-        player={player}
-        allowsFullscreen={false}
-        allowsPictureInPicture={false}
-      />
-      <Text style={styles.loadingText}>Tadado</Text>
-    </View>
-  );
-}
-
-export default function HomeScreen() {
-  const [showSplash, setShowSplash] = useState(true);
+export default function SignUpScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSignIn = async () => {
+  const handleSignUp = async () => {
     try {
       setLoading(true);
       if (!email || !password) {
-        Alert.alert("Hata", "Lütfen email ve şifrenizi girin.");
+        Alert.alert("Hata", "Lütfen tüm alanları doldurun.");
         return;
       }
 
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const { data: authData, error: signUpError } = await supabase.auth.signUp(
+        {
+          email,
+          password,
+        }
+      );
+
+      if (signUpError) {
+        console.error("Auth error:", signUpError);
+        throw signUpError;
+      }
+
+      if (!authData?.user?.id) {
+        throw new Error("Kullanıcı kaydı oluşturulamadı.");
+      }
+
+      const { error: userError } = await supabase.from("users").insert({
+        id: authData.user.id,
+        email: email,
       });
 
-      if (error) throw error;
+      if (userError) {
+        console.error("Database error:", userError);
+        throw userError;
+      }
 
-      Alert.alert("Başarılı", "Giriş yapıldı!");
+      Alert.alert(
+        "Kayıt Başarılı",
+        "Hesabınız oluşturuldu. Şimdi giriş yapabilirsiniz.",
+        [
+          {
+            text: "Tamam",
+            onPress: () => router.replace("/"),
+          },
+        ]
+      );
     } catch (error: any) {
       Alert.alert("Hata", error.message || "Bir hata oluştu");
     } finally {
       setLoading(false);
     }
   };
-
-  if (showSplash) {
-    return <SplashVideoScreen onFinish={() => setShowSplash(false)} />;
-  }
 
   return (
     <KeyboardAvoidingView
@@ -96,7 +82,7 @@ export default function HomeScreen() {
           <Text
             style={[{ fontFamily: "Inter", fontWeight: "700" }, styles.title]}
           >
-            Tadado.
+            Hesap Oluştur
           </Text>
           <Text
             style={[
@@ -104,7 +90,7 @@ export default function HomeScreen() {
               styles.subtitle,
             ]}
           >
-            AI Tabuu game, reimagined.
+            Tadado&apos;ya hoş geldiniz!
           </Text>
         </View>
 
@@ -140,37 +126,25 @@ export default function HomeScreen() {
             </View>
 
             <TouchableOpacity
-              style={styles.forgotPasswordButton}
-              onPress={() =>
-                Alert.alert(
-                  "Bilgi",
-                  "Şifre sıfırlama özelliği yakında eklenecek!"
-                )
-              }
-            >
-              <Text style={styles.forgotPasswordText}>Şifremi Unuttum?</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.signInButton, loading && styles.disabledButton]}
-              onPress={handleSignIn}
+              style={[styles.signUpButton, loading && styles.disabledButton]}
+              onPress={handleSignUp}
               disabled={loading}
             >
-              <Text style={styles.signInButtonText}>
-                {loading ? "İşleniyor..." : "Giriş Yap"}
+              <Text style={styles.signUpButtonText}>
+                {loading ? "İşleniyor..." : "Kayıt Ol"}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Hesabınız yok mu? </Text>
+          <Text style={styles.footerText}>Zaten hesabınız var mı? </Text>
           <TouchableOpacity
-            onPress={() => router.push("/signup")}
+            onPress={() => router.replace("/")}
             disabled={loading}
           >
-            <Text style={[styles.signUpText, loading && styles.disabledText]}>
-              Kayıt Ol
+            <Text style={[styles.signInText, loading && styles.disabledText]}>
+              Giriş Yap
             </Text>
           </TouchableOpacity>
         </View>
@@ -180,22 +154,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  video: {
-    width: width * 0.6,
-    height: width * 0.6,
-    marginBottom: 30,
-  },
-  loadingText: {
-    fontSize: 36,
-    color: "#333333",
-    textAlign: "center",
-  },
   container: {
     flex: 1,
     flexDirection: "column",
@@ -214,12 +172,12 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   title: {
-    fontSize: 42,
+    fontSize: 32,
     color: "#333333",
     marginBottom: 8,
   },
   subtitle: {
-    fontSize: 12,
+    fontSize: 16,
     color: "#ffff",
     textAlign: "center",
   },
@@ -255,15 +213,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e2e8f0",
   },
-  forgotPasswordButton: {
-    alignSelf: "flex-end",
-    marginTop: -8,
-  },
-  forgotPasswordText: {
-    color: "#333333",
-    fontSize: 14,
-  },
-  signInButton: {
+  signUpButton: {
     backgroundColor: "#007c88",
     paddingVertical: 18,
     borderRadius: 12,
@@ -274,7 +224,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 6,
   },
-  signInButtonText: {
+  signUpButtonText: {
     color: "#ffffff",
     fontSize: 18,
     textAlign: "center",
@@ -289,9 +239,10 @@ const styles = StyleSheet.create({
     color: "#ffff",
     fontSize: 15,
   },
-  signUpText: {
+  signInText: {
     color: "#333333",
     fontSize: 15,
+    fontWeight: "bold",
   },
   disabledButton: {
     opacity: 0.7,
