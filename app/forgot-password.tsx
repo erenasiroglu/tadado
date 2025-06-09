@@ -16,9 +16,8 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default function SignUpScreen() {
+export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0.95));
@@ -40,86 +39,41 @@ export default function SignUpScreen() {
     ]).start();
   }, []);
 
-  const handleSignUp = async () => {
+  const handleResetPassword = async () => {
     try {
       setLoading(true);
 
-      if (!email || !password) {
+      if (!email) {
         showNotification({
           type: "warning",
-          message: "Lütfen tüm alanları doldurun",
+          message: "Lütfen email adresinizi girin",
           duration: 3000,
         });
         return;
       }
 
-      // Önce kullanıcının var olup olmadığını kontrol edelim
-      const { data: existingUser } = await supabase
-        .from("users")
-        .select("*")
-        .eq("email", email)
-        .single();
-
-      if (existingUser) {
-        showNotification({
-          type: "error",
-          message: "Bu email adresi zaten kullanımda",
-          duration: 3000,
-        });
-        return;
-      }
-
-      console.log("Kayıt işlemi başlatılıyor...");
-      const { data: authData, error: signUpError } = await supabase.auth.signUp(
-        {
-          email,
-          password,
-          options: {
-            data: {
-              email: email,
-            },
-          },
-        }
-      );
-
-      if (signUpError) {
-        console.error("Auth error:", signUpError);
-        throw signUpError;
-      }
-
-      console.log("Auth başarılı, kullanıcı:", authData?.user);
-
-      if (!authData?.user?.id) {
-        throw new Error("Kullanıcı kaydı oluşturulamadı.");
-      }
-
-      const { error: userError } = await supabase.from("users").insert({
-        id: authData.user.id,
-        email: email,
-        created_at: new Date().toISOString(),
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "tadado://reset-password",
       });
 
-      if (userError) {
-        console.error("Database error:", userError);
-        throw userError;
+      if (error) {
+        throw error;
       }
-
-      console.log("Kullanıcı veritabanına kaydedildi");
 
       showNotification({
         type: "success",
-        message: "Hesabınız oluşturuldu! Giriş yapabilirsiniz",
-        duration: 3000,
+        message: "Şifre sıfırlama bağlantısı email adresinize gönderildi",
+        duration: 4000,
       });
 
       setTimeout(() => {
         router.replace("/");
       }, 2000);
     } catch (error: any) {
-      console.error("Signup error:", error);
+      console.error("Şifre sıfırlama hatası:", error);
       showNotification({
         type: "error",
-        message: error.message || "Kayıt sırasında bir hata oluştu",
+        message: error.message || "Şifre sıfırlama işlemi başarısız oldu",
         duration: 3000,
       });
     } finally {
@@ -143,9 +97,20 @@ export default function SignUpScreen() {
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
           >
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => router.back()}
+            >
+              <Icon name="arrow-left" size={20} color="#FFFFFF" />
+            </TouchableOpacity>
+
             <View style={styles.header}>
               <Text style={styles.logo}>Tadado</Text>
-              <Text style={styles.subtitle}>AI ile Tabu'ya hoş geldiniz!</Text>
+              <Text style={styles.subtitle}>Şifrenizi mi unuttunuz?</Text>
+              <Text style={styles.description}>
+                Email adresinizi girin, size şifre sıfırlama bağlantısı
+                gönderelim
+              </Text>
             </View>
 
             <Animated.View
@@ -173,61 +138,30 @@ export default function SignUpScreen() {
                   />
                 </View>
 
-                <View style={styles.inputGroup}>
-                  <Text style={styles.inputLabel}>Şifre</Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="••••••••"
-                    placeholderTextColor="#666666"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                    autoComplete="password"
-                    editable={!loading}
-                  />
-                </View>
-
                 <TouchableOpacity
-                  style={[
-                    styles.signUpButton,
-                    loading && styles.disabledButton,
-                  ]}
-                  onPress={handleSignUp}
+                  style={[styles.resetButton, loading && styles.disabledButton]}
+                  onPress={handleResetPassword}
                   disabled={loading}
                 >
                   <LinearGradient
                     colors={["#ffa07d", "#ff7d5d"]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
-                    style={styles.signUpButtonGradient}
+                    style={styles.resetButtonGradient}
                   >
                     <Icon
-                      name="user-plus"
+                      name="envelope"
                       size={20}
                       color="#FFFFFF"
                       style={styles.buttonIcon}
                     />
-                    <Text style={styles.signUpButtonText}>
-                      {loading ? "İşleniyor..." : "Kayıt Ol"}
+                    <Text style={styles.resetButtonText}>
+                      {loading ? "İşleniyor..." : "Sıfırlama Bağlantısı Gönder"}
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>
               </View>
             </Animated.View>
-
-            <View style={styles.footer}>
-              <Text style={styles.footerText}>Zaten hesabınız var mı? </Text>
-              <TouchableOpacity
-                onPress={() => router.replace("/")}
-                disabled={loading}
-              >
-                <Text
-                  style={[styles.signInText, loading && styles.disabledText]}
-                >
-                  Giriş Yap
-                </Text>
-              </TouchableOpacity>
-            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
@@ -255,10 +189,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 40,
   },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#333333",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
   header: {
     alignItems: "center",
     marginBottom: 40,
-    marginTop: 40,
   },
   logo: {
     fontSize: 42,
@@ -267,9 +209,15 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   subtitle: {
+    fontSize: 24,
+    color: "#FFFFFF",
+    marginBottom: 12,
+  },
+  description: {
     fontSize: 16,
     color: "#FFFFFF80",
-    marginTop: 8,
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
   card: {
     backgroundColor: "#2A2A2A",
@@ -300,12 +248,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#444444",
   },
-  signUpButton: {
+  resetButton: {
     borderRadius: 12,
     overflow: "hidden",
     marginTop: 10,
   },
-  signUpButtonGradient: {
+  resetButtonGradient: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -314,30 +262,12 @@ const styles = StyleSheet.create({
   buttonIcon: {
     marginRight: 10,
   },
-  signUpButtonText: {
+  resetButtonText: {
     color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "600",
   },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  footerText: {
-    fontSize: 16,
-    color: "#FFFFFF80",
-  },
-  signInText: {
-    fontSize: 16,
-    color: "#ffa07d",
-    fontWeight: "600",
-  },
   disabledButton: {
-    opacity: 0.6,
-  },
-  disabledText: {
     opacity: 0.6,
   },
 });

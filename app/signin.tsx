@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default function SignUpScreen() {
+export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,86 +40,70 @@ export default function SignUpScreen() {
     ]).start();
   }, []);
 
-  const handleSignUp = async () => {
+  const handleSignIn = async () => {
     try {
       setLoading(true);
-
       if (!email || !password) {
         showNotification({
           type: "warning",
-          message: "Lütfen tüm alanları doldurun",
+          message: "Lütfen email ve şifrenizi girin",
           duration: 3000,
         });
         return;
       }
 
-      // Önce kullanıcının var olup olmadığını kontrol edelim
-      const { data: existingUser } = await supabase
-        .from("users")
-        .select("*")
-        .eq("email", email)
-        .single();
+      console.log("Giriş denemesi yapılıyor...");
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      if (existingUser) {
-        showNotification({
-          type: "error",
-          message: "Bu email adresi zaten kullanımda",
-          duration: 3000,
-        });
-        return;
-      }
+      if (error) {
+        console.error("Giriş hatası:", error.message);
+        if (error.message.includes("Email not confirmed")) {
+          showNotification({
+            type: "warning",
+            message: "Email adresinizi doğrulayın veya yöneticinize başvurun",
+            duration: 4000,
+          });
+        } else {
+          const { data: userData, error: userError } = await supabase
+            .from("users")
+            .select("*")
+            .eq("email", email)
+            .single();
 
-      console.log("Kayıt işlemi başlatılıyor...");
-      const { data: authData, error: signUpError } = await supabase.auth.signUp(
-        {
-          email,
-          password,
-          options: {
-            data: {
-              email: email,
-            },
-          },
+          if (userError) {
+            console.error("Kullanıcı verisi kontrol hatası:", userError);
+          } else {
+            console.log("Kullanıcı verisi:", userData);
+          }
+
+          showNotification({
+            type: "error",
+            message: "Email veya şifre hatalı",
+            duration: 3000,
+          });
         }
-      );
-
-      if (signUpError) {
-        console.error("Auth error:", signUpError);
-        throw signUpError;
+        return;
       }
 
-      console.log("Auth başarılı, kullanıcı:", authData?.user);
-
-      if (!authData?.user?.id) {
-        throw new Error("Kullanıcı kaydı oluşturulamadı.");
+      if (data?.user) {
+        console.log("Giriş başarılı:", data.user);
+        showNotification({
+          type: "success",
+          message: "Giriş başarılı! Yönlendiriliyorsunuz...",
+          duration: 2000,
+        });
+        setTimeout(() => {
+          router.replace("/dashboard");
+        }, 1000);
       }
-
-      const { error: userError } = await supabase.from("users").insert({
-        id: authData.user.id,
-        email: email,
-        created_at: new Date().toISOString(),
-      });
-
-      if (userError) {
-        console.error("Database error:", userError);
-        throw userError;
-      }
-
-      console.log("Kullanıcı veritabanına kaydedildi");
-
-      showNotification({
-        type: "success",
-        message: "Hesabınız oluşturuldu! Giriş yapabilirsiniz",
-        duration: 3000,
-      });
-
-      setTimeout(() => {
-        router.replace("/");
-      }, 2000);
     } catch (error: any) {
-      console.error("Signup error:", error);
+      console.error("Beklenmeyen hata:", error);
       showNotification({
         type: "error",
-        message: error.message || "Kayıt sırasında bir hata oluştu",
+        message: "Bir hata oluştu. Lütfen tekrar deneyin",
         duration: 3000,
       });
     } finally {
@@ -145,7 +129,9 @@ export default function SignUpScreen() {
           >
             <View style={styles.header}>
               <Text style={styles.logo}>Tadado</Text>
-              <Text style={styles.subtitle}>AI ile Tabu'ya hoş geldiniz!</Text>
+              <Text style={styles.subtitle}>
+                AI ile Tabu, yeniden hayal edildi!
+              </Text>
             </View>
 
             <Animated.View
@@ -188,27 +174,36 @@ export default function SignUpScreen() {
                 </View>
 
                 <TouchableOpacity
+                  style={styles.forgotPasswordButton}
+                  onPress={() => router.push("/forgot-password")}
+                >
+                  <Text style={styles.forgotPasswordText}>
+                    Şifremi Unuttum?
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
                   style={[
-                    styles.signUpButton,
+                    styles.signInButton,
                     loading && styles.disabledButton,
                   ]}
-                  onPress={handleSignUp}
+                  onPress={handleSignIn}
                   disabled={loading}
                 >
                   <LinearGradient
                     colors={["#ffa07d", "#ff7d5d"]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
-                    style={styles.signUpButtonGradient}
+                    style={styles.signInButtonGradient}
                   >
                     <Icon
-                      name="user-plus"
+                      name="sign-in"
                       size={20}
                       color="#FFFFFF"
                       style={styles.buttonIcon}
                     />
-                    <Text style={styles.signUpButtonText}>
-                      {loading ? "İşleniyor..." : "Kayıt Ol"}
+                    <Text style={styles.signInButtonText}>
+                      {loading ? "İşleniyor..." : "Giriş Yap"}
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>
@@ -216,15 +211,15 @@ export default function SignUpScreen() {
             </Animated.View>
 
             <View style={styles.footer}>
-              <Text style={styles.footerText}>Zaten hesabınız var mı? </Text>
+              <Text style={styles.footerText}>Hesabın yok mu? </Text>
               <TouchableOpacity
-                onPress={() => router.replace("/")}
+                onPress={() => router.push("/signup")}
                 disabled={loading}
               >
                 <Text
-                  style={[styles.signInText, loading && styles.disabledText]}
+                  style={[styles.signUpText, loading && styles.disabledText]}
                 >
-                  Giriş Yap
+                  Kayıt Ol
                 </Text>
               </TouchableOpacity>
             </View>
@@ -300,12 +295,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#444444",
   },
-  signUpButton: {
+  forgotPasswordButton: {
+    alignSelf: "flex-end",
+  },
+  forgotPasswordText: {
+    color: "#ffa07d",
+    fontSize: 14,
+  },
+  signInButton: {
     borderRadius: 12,
     overflow: "hidden",
     marginTop: 10,
   },
-  signUpButtonGradient: {
+  signInButtonGradient: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -314,7 +316,7 @@ const styles = StyleSheet.create({
   buttonIcon: {
     marginRight: 10,
   },
-  signUpButtonText: {
+  signInButtonText: {
     color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "600",
@@ -329,7 +331,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#FFFFFF80",
   },
-  signInText: {
+  signUpText: {
     fontSize: 16,
     color: "#ffa07d",
     fontWeight: "600",

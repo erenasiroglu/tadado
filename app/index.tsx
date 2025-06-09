@@ -1,302 +1,48 @@
 import { supabase } from "@/lib/supabase";
-import { router } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { VideoView, useVideoPlayer } from "expo-video";
+import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  Dimensions,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
-const { width } = Dimensions.get("window");
+type AppRoute = "/dashboard" | "/signin";
 
-SplashScreen.preventAutoHideAsync().catch(() => {});
-
-function SplashVideoScreen({ onFinish }: { onFinish: () => void }) {
-  const player = useVideoPlayer(
-    require("@/assets/animations/tadado.mp4"),
-    (player) => {
-      player.loop = true;
-      player.play();
-    }
-  );
+export default function Index() {
+  const [initialRoute, setInitialRoute] = useState<AppRoute | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      SplashScreen.hideAsync().finally(() => onFinish());
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    checkUser();
   }, []);
 
-  return (
-    <View style={styles.loadingContainer}>
-      <VideoView
-        style={styles.video}
-        player={player}
-        allowsFullscreen={false}
-        allowsPictureInPicture={false}
-      />
-      <Text style={styles.loadingText}>Tadado</Text>
-    </View>
-  );
-}
-
-export default function HomeScreen() {
-  const [showSplash, setShowSplash] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSignIn = async () => {
+  const checkUser = async () => {
     try {
-      setLoading(true);
-      if (!email || !password) {
-        Alert.alert("Hata", "Lütfen email ve şifrenizi girin.");
-        return;
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        setInitialRoute("/dashboard" as AppRoute);
+      } else {
+        setInitialRoute("/signin" as AppRoute);
       }
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      Alert.alert("Başarılı", "Giriş yapıldı!");
-    } catch (error: any) {
-      Alert.alert("Hata", error.message || "Bir hata oluştu");
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      setInitialRoute("/signin" as AppRoute);
     }
   };
 
-  if (showSplash) {
-    return <SplashVideoScreen onFinish={() => setShowSplash(false)} />;
+  // Eğer initialRoute henüz belirlenmemişse loading göster
+  if (!initialRoute) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#1A1A1A",
+        }}
+      >
+        <ActivityIndicator size="large" color="#ffa07d" />
+      </View>
+    );
   }
 
-  return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.header}>
-          <Text
-            style={[{ fontFamily: "Inter", fontWeight: "700" }, styles.title]}
-          >
-            Tadado.
-          </Text>
-          <Text
-            style={[
-              { fontFamily: "Inter", fontWeight: "700" },
-              styles.subtitle,
-            ]}
-          >
-            AI Tabuu game, reimagined.
-          </Text>
-        </View>
-
-        <View style={styles.card}>
-          <View style={styles.form}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Email</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="example@email.com"
-                placeholderTextColor="#999999"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-                editable={!loading}
-              />
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Şifre</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="••••••••"
-                placeholderTextColor="#999999"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                autoComplete="password"
-                editable={!loading}
-              />
-            </View>
-
-            <TouchableOpacity
-              style={styles.forgotPasswordButton}
-              onPress={() =>
-                Alert.alert(
-                  "Bilgi",
-                  "Şifre sıfırlama özelliği yakında eklenecek!"
-                )
-              }
-            >
-              <Text style={styles.forgotPasswordText}>Şifremi Unuttum?</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.signInButton, loading && styles.disabledButton]}
-              onPress={handleSignIn}
-              disabled={loading}
-            >
-              <Text style={styles.signInButtonText}>
-                {loading ? "İşleniyor..." : "Giriş Yap"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Hesabınız yok mu? </Text>
-          <TouchableOpacity
-            onPress={() => router.push("/signup")}
-            disabled={loading}
-          >
-            <Text style={[styles.signUpText, loading && styles.disabledText]}>
-              Kayıt Ol
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
+  return <Redirect href={initialRoute} />;
 }
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  video: {
-    width: width * 0.6,
-    height: width * 0.6,
-    marginBottom: 30,
-  },
-  loadingText: {
-    fontSize: 36,
-    color: "#333333",
-    textAlign: "center",
-  },
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    backgroundColor: "#ffa07d",
-  },
-  scrollContent: {
-    flexGrow: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-  },
-  header: {
-    alignItems: "center",
-    paddingTop: Platform.OS === "ios" ? 60 : 40,
-    paddingBottom: 40,
-  },
-  title: {
-    fontSize: 42,
-    color: "#333333",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 12,
-    color: "#ffff",
-    textAlign: "center",
-  },
-  card: {
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 32,
-    marginBottom: 24,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  form: {
-    gap: 20,
-  },
-  inputGroup: {
-    gap: 8,
-  },
-  inputLabel: {
-    fontSize: 14,
-    color: "#374151",
-    marginLeft: 4,
-  },
-  input: {
-    backgroundColor: "#f8fafc",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderRadius: 12,
-    fontSize: 16,
-    color: "#333333",
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-  },
-  forgotPasswordButton: {
-    alignSelf: "flex-end",
-    marginTop: -8,
-  },
-  forgotPasswordText: {
-    color: "#333333",
-    fontSize: 14,
-  },
-  signInButton: {
-    backgroundColor: "#007c88",
-    paddingVertical: 18,
-    borderRadius: 12,
-    marginTop: 12,
-    shadowColor: "#f7d705",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  signInButtonText: {
-    color: "#ffffff",
-    fontSize: 18,
-    textAlign: "center",
-  },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 32,
-  },
-  footerText: {
-    color: "#ffff",
-    fontSize: 15,
-  },
-  signUpText: {
-    color: "#333333",
-    fontSize: 15,
-  },
-  disabledButton: {
-    opacity: 0.7,
-  },
-  disabledText: {
-    opacity: 0.7,
-  },
-});
