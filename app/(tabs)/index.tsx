@@ -4,6 +4,7 @@ import { SearchIcon } from "@/components/ui/SearchIcon";
 import Colors from "@/constants/Colors";
 import { FontSizes, Typography } from "@/constants/Typography";
 import { useAuth } from "@/contexts/AuthContext";
+import { router } from "expo-router";
 import React from "react";
 import {
   Alert,
@@ -49,7 +50,7 @@ export default function HomeScreen() {
 
   const handleAICardPress = () => {
     // Navigate to AI deck creation page
-    Alert.alert("AI Deck Creator", "Navigate to AI deck creation page");
+    router.push("/(tabs)/create");
   };
 
   const handleGameCardPress = (type: string) => {
