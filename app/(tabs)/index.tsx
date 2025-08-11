@@ -1,9 +1,12 @@
+import { LanguageSelector } from "@/components/LanguageSelector";
 import { AICard } from "@/components/ui/AICard";
 import { GameCard } from "@/components/ui/GameCard";
+import { ProfileButton } from "@/components/ui/ProfileButton";
 import { SearchIcon } from "@/components/ui/SearchIcon";
 import Colors from "@/constants/Colors";
 import { FontSizes, Typography } from "@/constants/Typography";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -22,12 +25,13 @@ const { width: screenWidth } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const { user, session, loading, signOut, updateUserProfile } = useAuth();
+  const { t } = useLanguage();
 
   const handleSignOut = async () => {
-    Alert.alert("Sign Out", "Are you sure you want to sign out?", [
-      { text: "Cancel", style: "cancel" },
+    Alert.alert(t("auth.signOut"), t("auth.signOutConfirm"), [
+      { text: t("common.cancel"), style: "cancel" },
       {
-        text: "Sign Out",
+        text: t("auth.signOut"),
         style: "destructive",
         onPress: signOut,
       },
@@ -42,9 +46,9 @@ export default function HomeScreen() {
     });
 
     if (result.success) {
-      Alert.alert("Success", "Premium status updated!");
+      Alert.alert(t("common.success"), t("home.premiumUpdated"));
     } else {
-      Alert.alert("Error", result.error || "Update failed");
+      Alert.alert(t("common.error"), result.error || t("home.updateFailed"));
     }
   };
 
@@ -54,17 +58,17 @@ export default function HomeScreen() {
   };
 
   const handleGameCardPress = (type: string) => {
-    Alert.alert(`${type} Game`, `Navigate to ${type} game page`);
+    Alert.alert(`${type}`, t("games.navigate", { type }));
   };
 
   const handlePreviewPress = (type: string) => {
-    Alert.alert(`${type} Preview`, `Show preview for ${type} game`);
+    Alert.alert(`${type}`, t("games.preview", { type }));
   };
 
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>{t("common.loading")}</Text>
       </SafeAreaView>
     );
   }
@@ -79,11 +83,14 @@ export default function HomeScreen() {
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.headerTitle}>Welcome to Tadado!</Text>
+          <Text style={styles.headerTitle}>{t("common.welcome")}</Text>
         </View>
-        <SearchIcon
-          onPress={() => Alert.alert("Search", "Search functionality")}
-        />
+        <View style={styles.headerRight}>
+          <SearchIcon
+            onPress={() => Alert.alert(t("common.search"), "Search functionality")}
+          />
+          <ProfileButton size={36} />
+        </View>
       </View>
 
       <ScrollView
@@ -98,32 +105,38 @@ export default function HomeScreen() {
           <View style={styles.gameCardsContainer}>
             <GameCard
               type="classic"
-              onPress={() => handleGameCardPress("Classic Fun")}
-              onPreview={() => handlePreviewPress("Classic Fun")}
+              onPress={() => handleGameCardPress(t("games.classicFun"))}
+              onPreview={() => handlePreviewPress(t("games.classicFun"))}
             />
             <GameCard
               type="dirty"
-              onPress={() => handleGameCardPress("Dirty Minds")}
-              onPreview={() => handlePreviewPress("Dirty Minds")}
+              onPress={() => handleGameCardPress(t("games.dirtyMinds"))}
+              onPreview={() => handlePreviewPress(t("games.dirtyMinds"))}
             />
             <GameCard
               type="custom"
-              onPress={() => handleGameCardPress("Your Own Style")}
-              onPreview={() => handlePreviewPress("Your Own Style")}
+              onPress={() => handleGameCardPress(t("games.yourOwnStyle"))}
+              onPreview={() => handlePreviewPress(t("games.yourOwnStyle"))}
             />
+          </View>
+          
+          {/* Language Selector */}
+          <View style={styles.languageContainer}>
+            <Text style={styles.sectionTitle}>{t("common.language")}</Text>
+            <LanguageSelector />
           </View>
 
           {/* User Profile Section (if authenticated) */}
           {session && user && (
             <View style={styles.userSection}>
-              <Text style={styles.userSectionTitle}>Your Profile</Text>
+              <Text style={styles.userSectionTitle}>{t("home.yourProfile")}</Text>
               <View style={styles.userCard}>
                 <Text style={styles.username}>@{user.username}</Text>
                 <Text style={styles.userEmail}>{session.user.email}</Text>
 
                 <View style={styles.userStats}>
                   <View style={styles.statItem}>
-                    <Text style={styles.statLabel}>Language</Text>
+                    <Text style={styles.statLabel}>{t("common.language")}</Text>
                     <Text style={styles.statValue}>{user.language}</Text>
                   </View>
                   <View style={styles.statItem}>
@@ -134,7 +147,7 @@ export default function HomeScreen() {
                         user.is_premium && styles.premiumText,
                       ]}
                     >
-                      {user.is_premium ? "⭐ Premium" : "Standard"}
+                      {user.is_premium ? t("home.premium") : t("home.standard")}
                     </Text>
                   </View>
                 </View>
@@ -145,7 +158,7 @@ export default function HomeScreen() {
                     onPress={handleTogglePremium}
                   >
                     <Text style={styles.actionButtonText}>
-                      {user.is_premium ? "Cancel Premium" : "Go Premium"}
+                      {user.is_premium ? t("home.cancelPremium") : t("home.goPremium")}
                     </Text>
                   </TouchableOpacity>
 
@@ -153,7 +166,7 @@ export default function HomeScreen() {
                     style={[styles.actionButton, styles.signOutButton]}
                     onPress={handleSignOut}
                   >
-                    <Text style={styles.signOutText}>Sign Out</Text>
+                    <Text style={styles.signOutText}>{t("common.signOut")}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -183,6 +196,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
   logo: {
     width: 36,
     height: 36,
@@ -204,6 +222,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 32,
+  },
+  languageContainer: {
+    marginBottom: 32,
+  },
+  sectionTitle: {
+    ...Typography.heading.semiBold,
+    fontSize: FontSizes.xl,
+    color: "#FBAA12",
+    marginBottom: 12,
   },
   userSection: {
     marginTop: 32,
