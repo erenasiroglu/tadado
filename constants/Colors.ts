@@ -1,21 +1,36 @@
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+const tintColorLight = '#2a0a3b';
+const tintColorDark = '#FBAA12';
 
-export const Colors = {
+export default {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    text: '#000',
+    background: '#2a0a3b',
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: '#fff',
+    background: '#2a0a3b',
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
   },
+  tadado: {
+    primary: '#2a0a3b',
+    secondary: '#FBAA12',
+    accent: '#38145D',
+    danger: '#D92151',
+    dark: '#150527',
+    card: {
+      classic: '#38145D',
+      dirty: '#5D022C',
+      custom: '#FBAA12',
+    },
+    text: {
+      classic: '#FBAA12',
+      dirty: '#D92151',
+      custom: '#38145D',
+    }
+  }
 };

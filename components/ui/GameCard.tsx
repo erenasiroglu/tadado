@@ -1,0 +1,135 @@
+import Colors from "@/constants/Colors";
+import { Typography } from "@/constants/Typography";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+interface GameCardProps {
+  type: "classic" | "dirty" | "custom";
+  onPress: () => void;
+  onPreview: () => void;
+}
+
+export const GameCard: React.FC<GameCardProps> = ({
+  type,
+  onPress,
+  onPreview,
+}) => {
+  const cardConfig = {
+    classic: {
+      backgroundColor: Colors.tadado.card.classic,
+      textColor: Colors.tadado.text.classic,
+      title: "CLASSIC FUN!",
+      showR18: false,
+    },
+    dirty: {
+      backgroundColor: Colors.tadado.card.dirty,
+      textColor: Colors.tadado.text.dirty,
+      title: "DIRTY MINDS!",
+      showR18: true,
+    },
+    custom: {
+      backgroundColor: Colors.tadado.card.custom,
+      textColor: Colors.tadado.text.custom,
+      title: "YOUR OWN STYLE!",
+      showR18: false,
+    },
+  };
+
+  const config = cardConfig[type];
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={[styles.card, { backgroundColor: config.backgroundColor }]}
+        onPress={onPress}
+      >
+        <View style={styles.cardContent}>
+          <Text style={[styles.title, { color: config.textColor }]}>
+            {config.title}
+          </Text>
+
+          {config.showR18 && (
+            <View style={styles.r18Badge}>
+              <Text style={styles.r18Text}>+18</Text>
+            </View>
+          )}
+
+          <TouchableOpacity
+            style={[
+              styles.previewButton,
+              { backgroundColor: config.textColor },
+            ]}
+            onPress={onPreview}
+          >
+            <Text
+              style={[styles.previewText, { color: config.backgroundColor }]}
+            >
+              PREVIEW
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 8,
+  },
+  card: {
+    width: 116,
+    height: 184,
+    borderRadius: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  cardContent: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    padding: 8,
+    paddingTop: 12,
+    paddingBottom: 8,
+  },
+  title: {
+    ...Typography.heading.semiBold,
+    fontSize: 22,
+    textAlign: "center",
+    lineHeight: 40,
+  },
+  r18Badge: {
+    backgroundColor: "#D92151",
+    borderRadius: 13,
+    width: 26,
+    height: 26,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  r18Text: {
+    ...Typography.r18.semiBold,
+    fontSize: 14,
+    color: "#5D022C",
+  },
+  previewButton: {
+    width: 75,
+    height: 23,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  previewText: {
+    ...Typography.body.semiBold,
+    fontSize: 12,
+    textAlign: "center",
+  },
+});
