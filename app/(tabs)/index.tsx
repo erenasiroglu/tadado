@@ -1,4 +1,3 @@
-import { LanguageSelector } from "@/components/LanguageSelector";
 import { AICard } from "@/components/ui/AICard";
 import { GameCard } from "@/components/ui/GameCard";
 import { ProfileButton } from "@/components/ui/ProfileButton";
@@ -87,7 +86,9 @@ export default function HomeScreen() {
         </View>
         <View style={styles.headerRight}>
           <SearchIcon
-            onPress={() => Alert.alert(t("common.search"), "Search functionality")}
+            onPress={() =>
+              Alert.alert(t("common.search"), "Search functionality")
+            }
           />
           <ProfileButton size={36} />
         </View>
@@ -119,17 +120,13 @@ export default function HomeScreen() {
               onPreview={() => handlePreviewPress(t("games.yourOwnStyle"))}
             />
           </View>
-          
-          {/* Language Selector */}
-          <View style={styles.languageContainer}>
-            <Text style={styles.sectionTitle}>{t("common.language")}</Text>
-            <LanguageSelector />
-          </View>
 
           {/* User Profile Section (if authenticated) */}
           {session && user && (
             <View style={styles.userSection}>
-              <Text style={styles.userSectionTitle}>{t("home.yourProfile")}</Text>
+              <Text style={styles.userSectionTitle}>
+                {t("home.yourProfile")}
+              </Text>
               <View style={styles.userCard}>
                 <Text style={styles.username}>@{user.username}</Text>
                 <Text style={styles.userEmail}>{session.user.email}</Text>
@@ -158,7 +155,9 @@ export default function HomeScreen() {
                     onPress={handleTogglePremium}
                   >
                     <Text style={styles.actionButtonText}>
-                      {user.is_premium ? t("home.cancelPremium") : t("home.goPremium")}
+                      {user.is_premium
+                        ? t("home.cancelPremium")
+                        : t("home.goPremium")}
                     </Text>
                   </TouchableOpacity>
 
@@ -166,7 +165,9 @@ export default function HomeScreen() {
                     style={[styles.actionButton, styles.signOutButton]}
                     onPress={handleSignOut}
                   >
-                    <Text style={styles.signOutText}>{t("common.signOut")}</Text>
+                    <Text style={styles.signOutText}>
+                      {t("common.signOut")}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>

@@ -1,16 +1,19 @@
+import { LanguageSelector } from "@/components/LanguageSelector";
 import Colors from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { FontSizes, Typography } from "@/constants/Typography";
+import { useLanguage } from "@/contexts/LanguageContext";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
+  const { t } = useLanguage();
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Profile</Text>
-        <Text style={styles.subtitle}>Your profile settings...</Text>
+      <View style={styles.languageContainer}>
+        <Text style={styles.sectionTitle}>{t("common.language")}</Text>
+        <LanguageSelector />
       </View>
     </SafeAreaView>
   );
@@ -20,6 +23,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.tadado.primary,
+  },
+  languageContainer: {
+    marginBottom: 32,
+  },
+  sectionTitle: {
+    ...Typography.heading.semiBold,
+    fontSize: FontSizes.xl,
+    color: "#FBAA12",
+    marginBottom: 12,
   },
   content: {
     flex: 1,
