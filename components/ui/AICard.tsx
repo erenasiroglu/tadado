@@ -1,6 +1,7 @@
 import Colors from "@/constants/Colors";
 import { BorderRadius, Spacing } from "@/constants/Spacing";
 import { FontSizes, Typography } from "@/constants/Typography";
+import { useLanguage } from "@/contexts/LanguageContext";
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useRef, useState } from "react";
@@ -12,25 +13,19 @@ import {
   Text,
   View,
 } from "react-native";
- 
 
 interface AICardProps {
   onPress: () => void;
 }
 
 export const AICard: React.FC<AICardProps> = ({ onPress }) => {
+  const { t } = useLanguage();
   const scale = useRef(new Animated.Value(1)).current;
   const fade = useRef(new Animated.Value(0)).current;
   // reserved for future ambient effects
   const [topicIndex, setTopicIndex] = useState(0);
-  const topics = [
-    "Naughty",
-    "Roast",
-    "Inside jokes",
-    "Pop culture",
-    "Flirty",
-    "Mystery",
-  ]; // teaser only
+  // Get topics array from translations
+  const topicsArray = t("ai.topics", {}, true);
 
   useEffect(() => {
     let mounted = true;
@@ -44,7 +39,7 @@ export const AICard: React.FC<AICardProps> = ({ onPress }) => {
       }).start(({ finished }) => {
         if (!finished || !mounted) return;
         setTimeout(() => {
-          setTopicIndex((i) => (i + 1) % topics.length);
+          setTopicIndex((i) => (i + 1) % topicsArray.length);
           if (mounted) tick();
         }, 900);
       });
@@ -53,7 +48,7 @@ export const AICard: React.FC<AICardProps> = ({ onPress }) => {
     return () => {
       mounted = false;
     };
-  }, [fade, topics.length]);
+  }, [fade, topicsArray.length]);
 
   useEffect(() => {
     // Reserved for future subtle ambient motions if needed
@@ -102,8 +97,8 @@ export const AICard: React.FC<AICardProps> = ({ onPress }) => {
       />
       <View style={styles.headerRow}>
         <View style={styles.titleCol}>
-          <Text style={styles.title}>Say less.<Text style={styles.titleFaint}> Play more.</Text></Text>
-          <Text style={styles.subtitle}>AI turns your idea into a full deck.</Text>
+          <Text style={styles.title}>{t("ai.title")}<Text style={styles.titleFaint}>{t("ai.titleFaint")}</Text></Text>
+          <Text style={styles.subtitle}>{t("ai.subtitle")}</Text>
         </View>
       </View>
 
@@ -124,7 +119,7 @@ export const AICard: React.FC<AICardProps> = ({ onPress }) => {
             },
           ]}
         >
-          {topics[topicIndex]}
+          {topicsArray[topicIndex]}
         </Animated.Text>
         
       </View>

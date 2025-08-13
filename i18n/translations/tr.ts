@@ -1,4 +1,17 @@
 export default {
+  ai: {
+    title: "Az konuş.",
+    titleFaint: " Çok oyna.",
+    subtitle: "Yapay zeka fikrini tam bir deste haline getirir.",
+    topics: [
+      "Yaramaz",
+      "Takılma",
+      "İç şakalar",
+      "Pop kültürü",
+      "Flörtöz",
+      "Gizem",
+    ],
+  },
   common: {
     welcome: "Tadado'ya Hoş Geldiniz!",
     loading: "Yükleniyor...",
@@ -10,6 +23,8 @@ export default {
     language: "Dil",
     premium: "Premium",
     searchFunctionality: "Arama işlevi",
+    new: "YENİ",
+    buy: "SATIN AL {{price}}",
   },
   tabs: {
     home: "Ana Sayfa",
@@ -22,6 +37,10 @@ export default {
     cardWasPressed: "Kart {{number}} basıldı",
     buyPressed: "Satın Al'a Basıldı",
     buyingCard: "Kart {{number}} 5.99$ karşılığında satın alınıyor",
+    romance: "ROMANTİK",
+    romanceDescription: "İlişkiler Hakkında Eğlenceli Oyun!",
+    travel: "SEYAHAT",
+    travelDescription: "Keşfet, Tahmin Et ve Gül!",
   },
   auth: {
     signOut: "Çıkış Yap",
@@ -42,6 +61,11 @@ export default {
     yourOwnStyle: "Kendi Tarzın",
     navigate: "{{type}} oyun sayfasına git",
     preview: "{{type}} oyunu için önizleme göster",
+    classicTitle: "KLASİK EĞLENCE!",
+    dirtyTitle: "MUZIR FİKİRLER!",
+    customTitle: "KENDİ TARZIN!",
+    previewButton: "ÖNİZLEME",
+    r18: "+18",
   },
   languages: {
     en: "İngilizce",

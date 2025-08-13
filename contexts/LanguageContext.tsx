@@ -8,7 +8,7 @@ const LANGUAGE_STORAGE_KEY = '@tadado_language';
 
 // Create context with default values
 const LanguageContext = createContext<I18n>({
-  t: (key: string) => key,
+  t: (key: string, params, returnRaw) => returnRaw ? [] : key,
   locale: DEFAULT_LANGUAGE,
   setLocale: () => {},
   locales: AVAILABLE_LANGUAGES,
@@ -44,7 +44,23 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   // Translation function
-  const t = (key: string, params?: TranslationParams): string => {
+  const t = (key: string, params?: TranslationParams, returnRaw?: boolean): any => {
+    if (returnRaw) {
+      const keys = key.split('.');
+      let value = translations[locale];
+      
+      // Navigate through the nested keys
+      for (const k of keys) {
+        if (value && typeof value === 'object' && k in value) {
+          value = value[k];
+        } else {
+          return [];
+        }
+      }
+      
+      return value;
+    }
+    
     return getTranslation(translations[locale], key, params);
   };
 

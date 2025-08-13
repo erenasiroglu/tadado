@@ -1,6 +1,7 @@
 import Colors from "@/constants/Colors";
 import { BorderRadius, Spacing } from "@/constants/Spacing";
 import { FontSizes, Typography } from "@/constants/Typography";
+import { useLanguage } from "@/contexts/LanguageContext";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -15,23 +16,24 @@ export const GameCard: React.FC<GameCardProps> = ({
   onPress,
   onPreview,
 }) => {
+  const { t } = useLanguage();
   const cardConfig = {
     classic: {
       backgroundColor: Colors.tadado.card.classic,
       textColor: Colors.tadado.text.classic,
-      title: "CLASSIC FUN!",
+      title: t("games.classicTitle"),
       showR18: false,
     },
     dirty: {
       backgroundColor: Colors.tadado.card.dirty,
       textColor: Colors.tadado.text.dirty,
-      title: "DIRTY MINDS!",
+      title: t("games.dirtyTitle"),
       showR18: true,
     },
     custom: {
       backgroundColor: Colors.tadado.card.custom,
       textColor: Colors.tadado.text.custom,
-      title: "YOUR OWN STYLE!",
+      title: t("games.customTitle"),
       showR18: false,
     },
   };
@@ -54,7 +56,7 @@ export const GameCard: React.FC<GameCardProps> = ({
           <View style={styles.middleSection}>
             {config.showR18 && (
               <View style={styles.r18Badge}>
-                <Text style={styles.r18Text}>+18</Text>
+                <Text style={styles.r18Text}>{t("games.r18")}</Text>
               </View>
             )}
           </View>
@@ -70,7 +72,7 @@ export const GameCard: React.FC<GameCardProps> = ({
               <Text
                 style={[styles.previewText, { color: config.backgroundColor }]}
               >
-                PREVIEW
+                {t("games.previewButton")}
               </Text>
             </TouchableOpacity>
           </View>

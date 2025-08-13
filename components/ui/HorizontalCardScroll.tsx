@@ -17,14 +17,10 @@ export const HorizontalCardScroll: React.FC<HorizontalCardScrollProps> = ({
     {
       id: 1,
       type: "romance",
-      title: "ROMANCE",
-      description: "Fun Game About Relationships!",
     },
     {
       id: 2,
       type: "travel",
-      title: "TRAVEL",
-      description: "Explore Guess and Laugh!",
     },
   ];
 
@@ -42,8 +38,8 @@ export const HorizontalCardScroll: React.FC<HorizontalCardScrollProps> = ({
           <Card
             key={card.id}
             type={card.type}
-            title={card.title}
-            description={card.description}
+            title="" // Title will be provided by translation in Card component
+            description="" // Description will be provided by translation in Card component
             onPress={() => onCardPress(index)}
             onBuy={() => onBuyPress(index)}
           />

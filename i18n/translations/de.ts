@@ -1,4 +1,17 @@
 export default {
+  ai: {
+    title: "Sag weniger.",
+    titleFaint: " Spiel mehr.",
+    subtitle: "KI verwandelt deine Idee in ein vollständiges Deck.",
+    topics: [
+      "Frech",
+      "Necken",
+      "Insider-Witze",
+      "Popkultur",
+      "Flirty",
+      "Mysterium",
+    ],
+  },
   common: {
     welcome: "Willkommen bei Tadado!",
     loading: "Wird geladen...",
@@ -10,6 +23,8 @@ export default {
     language: "Sprache",
     premium: "Premium",
     searchFunctionality: "Suchfunktion",
+    new: "NEU",
+    buy: "KAUFEN {{price}}",
   },
   tabs: {
     home: "Startseite",
@@ -22,6 +37,10 @@ export default {
     cardWasPressed: "Karte {{number}} wurde gedrückt",
     buyPressed: "Kaufen gedrückt",
     buyingCard: "Kaufe Karte {{number}} für 5,99 €",
+    romance: "ROMANTIK",
+    romanceDescription: "Lustiges Spiel über Beziehungen!",
+    travel: "REISEN",
+    travelDescription: "Entdecken, Raten und Lachen!",
   },
   auth: {
     signOut: "Abmelden",
@@ -42,6 +61,11 @@ export default {
     yourOwnStyle: "Dein eigener Stil",
     navigate: "Zur {{type}}-Spielseite navigieren",
     preview: "Vorschau für {{type}}-Spiel anzeigen",
+    classicTitle: "KLASSISCHER SPAß!",
+    dirtyTitle: "SCHMUTZIGE GEDANKEN!",
+    customTitle: "DEIN EIGENER STIL!",
+    previewButton: "VORSCHAU",
+    r18: "+18",
   },
   languages: {
     en: "Englisch",

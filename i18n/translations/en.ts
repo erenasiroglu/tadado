@@ -1,4 +1,17 @@
 export default {
+  ai: {
+    title: "Say less.",
+    titleFaint: " Play more.",
+    subtitle: "AI turns your idea into a full deck.",
+    topics: [
+      "Naughty",
+      "Roast",
+      "Inside jokes",
+      "Pop culture",
+      "Flirty",
+      "Mystery",
+    ],
+  },
   common: {
     welcome: "Welcome to Tadado!",
     loading: "Loading...",
@@ -10,6 +23,8 @@ export default {
     language: "Language",
     premium: "Premium",
     searchFunctionality: "Search functionality",
+    new: "NEW",
+    buy: "BUY {{price}}",
   },
   tabs: {
     home: "Home",
@@ -22,6 +37,10 @@ export default {
     cardWasPressed: "Card {{number}} was pressed",
     buyPressed: "Buy Pressed",
     buyingCard: "Buying card {{number}} for $5.99",
+    romance: "ROMANCE",
+    romanceDescription: "Fun Game About Relationships!",
+    travel: "TRAVEL",
+    travelDescription: "Explore Guess and Laugh!",
   },
   auth: {
     signOut: "Sign Out",
@@ -42,6 +61,11 @@ export default {
     yourOwnStyle: "Your Own Style",
     navigate: "Navigate to {{type}} game page",
     preview: "Show preview for {{type}} game",
+    classicTitle: "CLASSIC FUN!",
+    dirtyTitle: "DIRTY MINDS!",
+    customTitle: "YOUR OWN STYLE!",
+    previewButton: "PREVIEW",
+    r18: "+18",
   },
   languages: {
     en: "English",

@@ -1,5 +1,6 @@
 import { BorderRadius, Spacing } from "@/constants/Spacing";
 import { FontSizes, Typography } from "@/constants/Typography";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -19,6 +20,7 @@ export const Card: React.FC<CardProps> = ({
   onPress,
   onBuy,
 }) => {
+  const { t } = useLanguage();
   // Determine gradient colors based on type
   const getGradientColors = (): [string, string] => {
     switch (type) {
@@ -93,7 +95,7 @@ export const Card: React.FC<CardProps> = ({
         {/* NEW Button */}
         <View style={styles.newButtonContainer}>
           <View style={[styles.newButton, { backgroundColor: getButtonColor() }]}>
-            <Text style={[styles.newButtonText, { color: getButtonTextColor() }]}>NEW</Text>
+            <Text style={[styles.newButtonText, { color: getButtonTextColor() }]}>{t("common.new")}</Text>
           </View>
         </View>
 
@@ -110,8 +112,8 @@ export const Card: React.FC<CardProps> = ({
 
           {/* Title and Description */}
           <View style={styles.textSection}>
-            <Text style={[styles.title, { color: getTextColor() }]}>{title}</Text>
-            <Text style={[styles.description, { color: getTextColor() }]}>{description}</Text>
+            <Text style={[styles.title, { color: getTextColor() }]}>{t(`cards.${type}`)}</Text>
+            <Text style={[styles.description, { color: getTextColor() }]}>{t(`cards.${type}Description`)}</Text>
           </View>
         </View>
 
@@ -122,7 +124,7 @@ export const Card: React.FC<CardProps> = ({
             onPress={onBuy}
             activeOpacity={0.8}
           >
-            <Text style={[styles.buyButtonText, { color: getButtonTextColor() }]}>BUY 5.99$</Text>
+            <Text style={[styles.buyButtonText, { color: getButtonTextColor() }]}>{t("common.buy", { price: "5.99$" })}</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
