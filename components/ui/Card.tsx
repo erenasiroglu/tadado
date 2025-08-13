@@ -4,19 +4,78 @@ import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface RomanceCardProps {
+interface CardProps {
+  title: string;
+  description: string;
+  type: "romance" | "travel" | string;
   onPress: () => void;
   onBuy: () => void;
-  title?: string;
-  description?: string;
 }
 
-export const RomanceCard: React.FC<RomanceCardProps> = ({
+export const Card: React.FC<CardProps> = ({
+  title,
+  description,
+  type,
   onPress,
   onBuy,
-  title = "ROMANCE",
-  description = "Fun Game About Relationships!",
 }) => {
+  // Determine gradient colors based on type
+  const getGradientColors = (): [string, string] => {
+    switch (type) {
+      case "romance":
+        return ["rgba(213, 124, 157, 0.8)", "rgba(255, 44, 122, 0.8)"];
+      case "travel":
+        return ["rgba(56, 20, 93, 0.8)", "rgba(93, 51, 145, 0.8)"];
+      default:
+        return ["rgba(56, 20, 93, 0.8)", "rgba(93, 51, 145, 0.8)"];
+    }
+  };
+
+  // Determine button and text colors based on type
+  const getButtonColor = () => {
+    switch (type) {
+      case "romance":
+        return "#5D022C";
+      case "travel":
+        return "#38145D";
+      default:
+        return "#38145D";
+    }
+  };
+
+  const getTextColor = () => {
+    switch (type) {
+      case "romance":
+        return "#5D022C";
+      case "travel":
+        return "#FBAA12";
+      default:
+        return "#FBAA12";
+    }
+  };
+
+  const getButtonTextColor = () => {
+    switch (type) {
+      case "romance":
+        return "#FF2C7A";
+      case "travel":
+        return "#FBAA12";
+      default:
+        return "#FBAA12";
+    }
+  };
+
+  const getPlayIconBackgroundColor = () => {
+    switch (type) {
+      case "romance":
+        return "#C77B9C";
+      case "travel":
+        return "#6E4EA3";
+      default:
+        return "#6E4EA3";
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -25,7 +84,7 @@ export const RomanceCard: React.FC<RomanceCardProps> = ({
         activeOpacity={0.9}
       >
         <LinearGradient
-          colors={["rgba(213, 124, 157, 0.8)", "rgba(255, 44, 122, 0.8)"]}
+          colors={getGradientColors()}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={StyleSheet.absoluteFill}
@@ -33,8 +92,8 @@ export const RomanceCard: React.FC<RomanceCardProps> = ({
 
         {/* NEW Button */}
         <View style={styles.newButtonContainer}>
-          <View style={styles.newButton}>
-            <Text style={styles.newButtonText}>NEW</Text>
+          <View style={[styles.newButton, { backgroundColor: getButtonColor() }]}>
+            <Text style={[styles.newButtonText, { color: getButtonTextColor() }]}>NEW</Text>
           </View>
         </View>
 
@@ -43,7 +102,7 @@ export const RomanceCard: React.FC<RomanceCardProps> = ({
           {/* Play Icon Section */}
           <View style={styles.playSection}>
             <View style={styles.playIconContainer}>
-              <View style={styles.playIconBackground}>
+              <View style={[styles.playIconBackground, { backgroundColor: getPlayIconBackgroundColor() }]}>
                 <Text style={styles.playIcon}>▶</Text>
               </View>
             </View>
@@ -51,19 +110,19 @@ export const RomanceCard: React.FC<RomanceCardProps> = ({
 
           {/* Title and Description */}
           <View style={styles.textSection}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={[styles.title, { color: getTextColor() }]}>{title}</Text>
+            <Text style={[styles.description, { color: getTextColor() }]}>{description}</Text>
           </View>
         </View>
 
         {/* BUY Button */}
         <View style={styles.buyButtonContainer}>
           <TouchableOpacity
-            style={styles.buyButton}
+            style={[styles.buyButton, { backgroundColor: getButtonColor() }]}
             onPress={onBuy}
             activeOpacity={0.8}
           >
-            <Text style={styles.buyButtonText}>BUY 5.99$</Text>
+            <Text style={[styles.buyButtonText, { color: getButtonTextColor() }]}>BUY 5.99$</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -95,7 +154,6 @@ const styles = StyleSheet.create({
   newButton: {
     width: 54,
     height: 23,
-    backgroundColor: "#5D022C",
     borderRadius: BorderRadius.sm,
     justifyContent: "center",
     alignItems: "center",
@@ -103,7 +161,6 @@ const styles = StyleSheet.create({
   newButtonText: {
     ...Typography.body.semiBold,
     fontSize: FontSizes.xs,
-    color: "#FF2C7A",
   },
   contentContainer: {
     flex: 1,
@@ -123,7 +180,6 @@ const styles = StyleSheet.create({
   playIconBackground: {
     width: 55,
     height: 55,
-    backgroundColor: "#C77B9C",
     borderRadius: 27.5,
     justifyContent: "center",
     alignItems: "center",
@@ -141,13 +197,11 @@ const styles = StyleSheet.create({
   title: {
     ...Typography.heading.semiBold,
     fontSize: FontSizes.lg,
-    color: "#5D022C",
     marginBottom: 4,
   },
   description: {
     ...Typography.body.regular,
     fontSize: FontSizes.xs,
-    color: "#5D022C",
     opacity: 0.65,
     textAlign: "center",
     lineHeight: 16,
@@ -161,7 +215,6 @@ const styles = StyleSheet.create({
   buyButton: {
     width: 70,
     height: 23,
-    backgroundColor: "#5D022C",
     borderRadius: BorderRadius.sm,
     justifyContent: "center",
     alignItems: "center",
@@ -170,6 +223,5 @@ const styles = StyleSheet.create({
   buyButtonText: {
     ...Typography.body.semiBold,
     fontSize: FontSizes.xs,
-    color: "#FF2C7A",
   },
 });

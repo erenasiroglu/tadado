@@ -1,51 +1,81 @@
-# Welcome to your Expo app 👋
+# Tadado App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile application built with React Native and Expo.
 
-## Get started
+## Project Structure
 
-1. Install dependencies
+The project has been reorganized for better maintainability and cleaner code structure:
 
-   ```bash
-   npm install
-   ```
+### Components
 
-2. Start the app
+Components are now organized by their purpose:
 
-   ```bash
-   npx expo start
-   ```
+- `components/common/`: Reusable UI components like ThemedText and ThemedView
+- `components/forms/`: Form-related components like LanguageSelector
+- `components/layout/`: Layout components like HapticTab and TabBarBackground
+- `components/ui/`: UI components specific to the app like AICard, GameCard, etc.
 
-In the output, you'll find options to open the app in a
+### Hooks
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Custom hooks are organized by functionality:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `hooks/useColorScheme.ts`: Hook for handling color scheme
+- `hooks/useThemeColor.ts`: Hook for theme colors
+- `hooks/useUsernameCheck.ts`: Hook for username availability checking
 
-## Get a fresh project
+### Contexts
 
-When you're ready, run:
+- `contexts/AuthContext.tsx`: Authentication context
+- `contexts/LanguageContext.tsx`: Language/translation context
+
+### i18n
+
+Internationalization support with translations for:
+
+- English
+- Turkish
+- German
+
+## Recent Cleanup Changes
+
+The following changes were made to improve code quality and maintainability:
+
+1. **Removed unused components**:
+   - HelloWave
+   - ParallaxScrollView
+   - Collapsible
+   - RomanceCard
+   - TravelCard
+   - ExternalLink
+
+2. **Removed empty directories**:
+   - database/
+   - src/
+   - examples/
+
+3. **Reorganized folder structure**:
+   - Created logical groupings for components
+   - Updated imports across the project
+
+4. **Simplified hooks**:
+   - Split useUsers.ts into a focused useUsernameCheck.ts
+
+5. **Ensured all text uses translations**:
+   - Added missing translation keys
+   - Updated components to use translation functions
+
+## Getting Started
 
 ```bash
-npm run reset-project
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+
+# Run on iOS
+npm run ios
+
+# Run on Android
+npm run android
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-# tadado

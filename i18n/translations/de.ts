@@ -8,6 +8,20 @@ export default {
     success: "Erfolg",
     error: "Fehler",
     language: "Sprache",
+    premium: "Premium",
+    searchFunctionality: "Suchfunktion",
+  },
+  tabs: {
+    home: "Startseite",
+    games: "Spiele",
+    create: "Erstellen",
+    profile: "Profil",
+  },
+  cards: {
+    cardPressed: "Karte gedrückt",
+    cardWasPressed: "Karte {{number}} wurde gedrückt",
+    buyPressed: "Kaufen gedrückt",
+    buyingCard: "Kaufe Karte {{number}} für 5,99 €",
   },
   auth: {
     signOut: "Abmelden",

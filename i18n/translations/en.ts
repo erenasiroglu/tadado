@@ -8,6 +8,20 @@ export default {
     success: "Success",
     error: "Error",
     language: "Language",
+    premium: "Premium",
+    searchFunctionality: "Search functionality",
+  },
+  tabs: {
+    home: "Home",
+    games: "Games",
+    create: "Create",
+    profile: "Profile",
+  },
+  cards: {
+    cardPressed: "Card Pressed",
+    cardWasPressed: "Card {{number}} was pressed",
+    buyPressed: "Buy Pressed",
+    buyingCard: "Buying card {{number}} for $5.99",
   },
   auth: {
     signOut: "Sign Out",

@@ -66,11 +66,11 @@ export default function HomeScreen() {
   };
 
   const handleCardPress = (index: number) => {
-    Alert.alert("Card Pressed", `Card ${index + 1} was pressed`);
+    Alert.alert(t("cards.cardPressed"), t("cards.cardWasPressed", { number: index + 1 }));
   };
 
   const handleBuyPress = (index: number) => {
-    Alert.alert("Buy Pressed", `Buying card ${index + 1} for $5.99`);
+    Alert.alert(t("cards.buyPressed"), t("cards.buyingCard", { number: index + 1 }));
   };
 
   if (loading) {
@@ -96,7 +96,7 @@ export default function HomeScreen() {
         <View style={styles.headerRight}>
           <SearchIcon
             onPress={() =>
-              Alert.alert(t("common.search"), "Search functionality")
+              Alert.alert(t("common.search"), t("common.searchFunctionality"))
             }
           />
           <ProfileButton size={36} />
@@ -152,7 +152,7 @@ export default function HomeScreen() {
                     <Text style={styles.statValue}>{user.language}</Text>
                   </View>
                   <View style={styles.statItem}>
-                    <Text style={styles.statLabel}>Premium</Text>
+                    <Text style={styles.statLabel}>{t("common.premium")}</Text>
                     <Text
                       style={[
                         styles.statValue,

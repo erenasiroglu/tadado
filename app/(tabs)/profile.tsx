@@ -1,4 +1,4 @@
-import { LanguageSelector } from "@/components/LanguageSelector";
+import { LanguageSelector } from "@/components/forms/LanguageSelector";
 import Colors from "@/constants/Colors";
 import { Spacing } from "@/constants/Spacing";
 import { FontSizes, Typography } from "@/constants/Typography";

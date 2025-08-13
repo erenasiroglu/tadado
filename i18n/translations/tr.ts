@@ -8,6 +8,20 @@ export default {
     success: "Başarılı",
     error: "Hata",
     language: "Dil",
+    premium: "Premium",
+    searchFunctionality: "Arama işlevi",
+  },
+  tabs: {
+    home: "Ana Sayfa",
+    games: "Oyunlar",
+    create: "Oluştur",
+    profile: "Profil",
+  },
+  cards: {
+    cardPressed: "Karta Basıldı",
+    cardWasPressed: "Kart {{number}} basıldı",
+    buyPressed: "Satın Al'a Basıldı",
+    buyingCard: "Kart {{number}} 5.99$ karşılığında satın alınıyor",
   },
   auth: {
     signOut: "Çıkış Yap",

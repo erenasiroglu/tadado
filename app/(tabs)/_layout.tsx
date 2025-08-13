@@ -2,12 +2,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 
-import { HapticTab } from "@/components/HapticTab";
-import TabBarBackground from "@/components/ui/TabBarBackground";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { HapticTab } from "@/components/layout/HapticTab";
+import TabBarBackground from "@/components/layout/TabBarBackground";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { t } = useLanguage();
 
   return (
     <Tabs
@@ -29,7 +29,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: t("tabs.home"),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "home" : "home-outline"}
@@ -42,7 +42,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="games"
         options={{
-          title: "Games",
+          title: t("tabs.games"),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "game-controller" : "game-controller-outline"}
@@ -55,7 +55,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="create"
         options={{
-          title: "Create",
+          title: t("tabs.create"),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "add-circle" : "add-circle-outline"}
@@ -68,7 +68,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: t("tabs.profile"),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "person" : "person-outline"}

@@ -1,5 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext';
-import { useUsernameCheck } from '@/hooks/useUsers';
+import { useUsernameCheck } from '@/hooks/useUsernameCheck';
 import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import {
