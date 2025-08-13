@@ -1,5 +1,6 @@
 import { AICard } from "@/components/ui/AICard";
 import { GameCard } from "@/components/ui/GameCard";
+import { HorizontalCardScroll } from "@/components/ui/HorizontalCardScroll";
 import { ProfileButton } from "@/components/ui/ProfileButton";
 import { SearchIcon } from "@/components/ui/SearchIcon";
 import Colors from "@/constants/Colors";
@@ -64,6 +65,14 @@ export default function HomeScreen() {
     Alert.alert(`${type}`, t("games.preview", { type }));
   };
 
+  const handleCardPress = (index: number) => {
+    Alert.alert("Card Pressed", `Card ${index + 1} was pressed`);
+  };
+
+  const handleBuyPress = (index: number) => {
+    Alert.alert("Buy Pressed", `Buying card ${index + 1} for $5.99`);
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -99,6 +108,12 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.content}>
+          {/* Horizontal Card Scroll */}
+          <HorizontalCardScroll
+            onCardPress={handleCardPress}
+            onBuyPress={handleBuyPress}
+          />
+
           {/* AI Card */}
           <AICard onPress={handleAICardPress} />
 
