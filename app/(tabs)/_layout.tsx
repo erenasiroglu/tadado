@@ -40,38 +40,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="games"
+        name="ask"
         options={{
-          title: t("tabs.games"),
+          title: t("tabs.ask"),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? "game-controller" : "game-controller-outline"}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="create"
-        options={{
-          title: t("tabs.create"),
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "add-circle" : "add-circle-outline"}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: t("tabs.profile"),
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "person" : "person-outline"}
+              name={focused ? "chatbubbles" : "chatbubbles-outline"}
               size={24}
               color={color}
             />

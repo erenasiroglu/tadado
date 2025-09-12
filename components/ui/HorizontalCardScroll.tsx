@@ -22,6 +22,14 @@ export const HorizontalCardScroll: React.FC<HorizontalCardScrollProps> = ({
       id: 2,
       type: "travel",
     },
+    {
+      id: 3,
+      type: "adventure",
+    },
+    {
+      id: 4,
+      type: "party",
+    },
   ];
 
   return (
@@ -52,6 +60,7 @@ export const HorizontalCardScroll: React.FC<HorizontalCardScrollProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginVertical: Spacing.md,
+    paddingHorizontal: 0, // Ana content ile aynı hizada
   },
   scrollContent: {
     paddingHorizontal: Spacing.md,

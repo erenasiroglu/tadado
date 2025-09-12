@@ -2,7 +2,6 @@ import { AICard } from "@/components/ui/AICard";
 import { GameCard } from "@/components/ui/GameCard";
 import { HorizontalCardScroll } from "@/components/ui/HorizontalCardScroll";
 import { ProfileButton } from "@/components/ui/ProfileButton";
-import { SearchIcon } from "@/components/ui/SearchIcon";
 import Colors from "@/constants/Colors";
 import { FontSizes, Typography } from "@/constants/Typography";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,7 +10,6 @@ import { router } from "expo-router";
 import React from "react";
 import {
   Alert,
-  Dimensions,
   Image,
   ScrollView,
   StyleSheet,
@@ -20,8 +18,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const { width: screenWidth } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const { user, session, loading, signOut, updateUserProfile } = useAuth();
@@ -53,8 +49,8 @@ export default function HomeScreen() {
   };
 
   const handleAICardPress = () => {
-    // Navigate to AI deck creation page
-    router.push("/(tabs)/create");
+    // Navigate to Ask page for now
+    router.push("/(tabs)/ask");
   };
 
   const handleGameCardPress = (type: string) => {
@@ -66,11 +62,17 @@ export default function HomeScreen() {
   };
 
   const handleCardPress = (index: number) => {
-    Alert.alert(t("cards.cardPressed"), t("cards.cardWasPressed", { number: index + 1 }));
+    Alert.alert(
+      t("cards.cardPressed"),
+      t("cards.cardWasPressed", { number: (index + 1).toString() })
+    );
   };
 
   const handleBuyPress = (index: number) => {
-    Alert.alert(t("cards.buyPressed"), t("cards.buyingCard", { number: index + 1 }));
+    Alert.alert(
+      t("cards.buyPressed"),
+      t("cards.buyingCard", { number: (index + 1).toString() })
+    );
   };
 
   if (loading) {
@@ -82,7 +84,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
@@ -94,11 +96,6 @@ export default function HomeScreen() {
           <Text style={styles.headerTitle}>{t("common.welcome")}</Text>
         </View>
         <View style={styles.headerRight}>
-          <SearchIcon
-            onPress={() =>
-              Alert.alert(t("common.search"), t("common.searchFunctionality"))
-            }
-          />
           <ProfileButton size={36} />
         </View>
       </View>
@@ -106,6 +103,11 @@ export default function HomeScreen() {
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+        automaticallyAdjustContentInsets={false}
+        contentInsetAdjustmentBehavior="never"
+        bounces={true}
+        alwaysBounceVertical={true}
       >
         <View style={styles.content}>
           {/* Horizontal Card Scroll */}
@@ -198,6 +200,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.tadado.primary,
+    paddingBottom: 0, // Tab bar için alt padding kaldırıldı
   },
   header: {
     flexDirection: "row",
@@ -231,13 +234,24 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 180, // Çok daha fazla boşluk ilk yükleme için
+    minHeight: "100%", // Minimum yükseklik garantisi
+    justifyContent: "flex-start", // İçeriği üstten başlat
+  },
   content: {
-    padding: 8,
+    paddingHorizontal: 8, // Sadece yatay padding
+    paddingTop: 8,
+    paddingBottom: 0, // Alt padding kaldırıldı
   },
   gameCardsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 32,
+    marginBottom: 80, // Tab bar için çok daha fazla boşluk
+    paddingBottom: 40, // Ekstra padding daha da artırıldı
+    paddingHorizontal: 8, // Ana content ile aynı hizada
+    gap: 8, // Kartlar arası boşluk
   },
   languageContainer: {
     marginBottom: 32,

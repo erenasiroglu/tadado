@@ -1,16 +1,10 @@
-import ar from './translations/ar';
-import de from './translations/de';
 import en from './translations/en';
-import es from './translations/es';
 import tr from './translations/tr';
 
 // All supported languages
 export const translations = {
   en,
   tr,
-  de,
-  es,
-  ar,
 };
 
 // Default language
@@ -20,9 +14,6 @@ export const DEFAULT_LANGUAGE = 'en';
 export const AVAILABLE_LANGUAGES = [
   { code: 'en', name: 'English' },
   { code: 'tr', name: 'Türkçe' },
-  { code: 'de', name: 'Deutsch' },
-  { code: 'es', name: 'Español' },
-  { code: 'ar', name: 'العربية' },
 ];
 
 /**

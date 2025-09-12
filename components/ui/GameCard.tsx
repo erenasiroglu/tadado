@@ -52,7 +52,7 @@ export const GameCard: React.FC<GameCardProps> = ({
               {config.title}
             </Text>
           </View>
-          
+
           <View style={styles.middleSection}>
             {config.showR18 && (
               <View style={styles.r18Badge}>
@@ -60,7 +60,7 @@ export const GameCard: React.FC<GameCardProps> = ({
               </View>
             )}
           </View>
-          
+
           <View style={styles.bottomSection}>
             <TouchableOpacity
               style={[
@@ -86,11 +86,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginHorizontal: Spacing.sm,
+    marginHorizontal: 0, // Ana container ile aynı hizada
   },
   card: {
     width: 116,
-    height: 184,
+    height: 200, // Yüksekliği artırdım
     borderRadius: BorderRadius.xl,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -102,9 +102,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
-    padding: Spacing.sm,
-    paddingTop: Spacing.md - Spacing.xs,
-    paddingBottom: Spacing.sm,
+    padding: Spacing.md,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.md,
   },
   topSection: {
     alignItems: "center",
@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
   bottomSection: {
     width: "100%",
     alignItems: "center",
-    marginTop: Spacing.xs,
+    marginTop: Spacing.sm,
+    paddingBottom: Spacing.xs,
   },
   title: {
     ...Typography.heading.semiBold,
