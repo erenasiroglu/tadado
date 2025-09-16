@@ -15,7 +15,6 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface GameSettings {
   deckLanguage: string;
@@ -85,7 +84,7 @@ export default function GameSettingsScreen() {
       
       if (result.success) {
         // Navigate to game start screen with category
-        router.push(`/(tabs)/game/game-start?category=${category}`);
+        router.push(`/game/game-start?category=${category}`);
       } else {
         Alert.alert(t("common.error"), result.error || t("game.createSessionFailed"));
       }
@@ -96,7 +95,7 @@ export default function GameSettingsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -247,30 +246,6 @@ export default function GameSettingsScreen() {
             )}
           </View>
 
-          {/* Game Summary */}
-          <View style={styles.summaryCard}>
-            <Text style={styles.summaryTitle}>{t("game.gameSummary")}</Text>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{t("game.deckLanguage")}:</Text>
-              <Text style={styles.summaryValue}>
-                {languages.find((l) => l.code === settings.deckLanguage)?.name}
-              </Text>
-            </View>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{t("game.roundDuration")}:</Text>
-              <Text style={styles.summaryValue}>{settings.roundDuration}s</Text>
-            </View>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{t("game.totalRounds")}:</Text>
-              <Text style={styles.summaryValue}>{settings.totalRounds}</Text>
-            </View>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{t("game.passLimit")}:</Text>
-              <Text style={styles.summaryValue}>
-                {settings.allowPass ? settings.passLimit : t("game.noPass")}
-              </Text>
-            </View>
-          </View>
         </View>
 
         {/* Start Game Button */}
@@ -281,7 +256,7 @@ export default function GameSettingsScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -289,6 +264,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.tadado.primary,
+    paddingTop: 44, // Status bar height
   },
   scrollContainer: {
     flex: 1,

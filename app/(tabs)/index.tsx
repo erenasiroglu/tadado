@@ -55,7 +55,7 @@ export default function HomeScreen() {
 
   const handleGameCardPress = (type: string) => {
     // Navigate to game mode selection with category
-    router.push(`/(tabs)/game?category=${type}`);
+    router.push(`/game?category=${type}`);
   };
 
   const handlePreviewPress = (type: string) => {

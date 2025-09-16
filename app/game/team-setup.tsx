@@ -1,6 +1,5 @@
 import Colors from "@/constants/Colors";
-import { Spacing } from "@/constants/Spacing";
-import { FontSizes, Typography } from "@/constants/Typography";
+import { Typography } from "@/constants/Typography";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
@@ -14,7 +13,6 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Team {
   id: string;
@@ -26,8 +24,8 @@ export default function TeamSetupScreen() {
   const { t } = useLanguage();
   const { category } = useLocalSearchParams<{ category: string }>();
   const [teams, setTeams] = useState<Team[]>([
-    { id: "1", name: t("game.team1"), players: [] },
-    { id: "2", name: t("game.team2"), players: [] },
+    { id: "1", name: "Team Alpha", players: ["Player 1", "Player 2"] },
+    { id: "2", name: "Team Beta", players: ["Player 3", "Player 4"] },
   ]);
   const [editingTeam, setEditingTeam] = useState<string | null>(null);
   const [tempTeamName, setTempTeamName] = useState("");
@@ -91,7 +89,7 @@ export default function TeamSetupScreen() {
 
   const handleStartGame = () => {
     if (canStartGame()) {
-      router.push(`/(tabs)/game/game-settings?category=${category}`);
+      router.push(`/game/game-settings?category=${category}`);
     } else {
       Alert.alert(
         t("game.notEnoughPlayers"),
@@ -101,7 +99,7 @@ export default function TeamSetupScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -135,41 +133,26 @@ export default function TeamSetupScreen() {
                       onChangeText={setTempTeamName}
                       onSubmitEditing={() => handleTeamNameSave(team.id)}
                       autoFocus
-                      placeholder={t("game.enterTeamName")}
+                      placeholder="Team name"
                       placeholderTextColor="#666"
                     />
                   ) : (
                     <Text style={styles.teamName}>{team.name}</Text>
                   )}
                   <Text style={styles.playerCount}>
-                    {team.players.length} {t("game.players")}
+                    {team.players.length} players
                   </Text>
                 </View>
-                <View style={styles.teamActions}>
-                  {editingTeam === team.id ? (
-                    <View style={styles.editActions}>
-                      <TouchableOpacity
-                        style={styles.actionButton}
-                        onPress={() => handleTeamNameSave(team.id)}
-                      >
-                        <Ionicons name="checkmark" size={20} color="#4CAF50" />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.actionButton}
-                        onPress={handleTeamNameCancel}
-                      >
-                        <Ionicons name="close" size={20} color="#F44336" />
-                      </TouchableOpacity>
-                    </View>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.actionButton}
-                      onPress={() => handleTeamNameEdit(team.id, team.name)}
-                    >
-                      <Ionicons name="pencil" size={20} color="#FBAA12" />
-                    </TouchableOpacity>
-                  )}
-                </View>
+                <TouchableOpacity
+                  style={styles.editButton}
+                  onPress={() => editingTeam === team.id ? handleTeamNameSave(team.id) : handleTeamNameEdit(team.id, team.name)}
+                >
+                  <Ionicons 
+                    name={editingTeam === team.id ? "checkmark" : "pencil"} 
+                    size={16} 
+                    color={editingTeam === team.id ? "#4CAF50" : "#FBAA12"} 
+                  />
+                </TouchableOpacity>
               </View>
 
               {/* Players List */}
@@ -181,7 +164,7 @@ export default function TeamSetupScreen() {
                       style={styles.removeButton}
                       onPress={() => removePlayer(team.id, playerIndex)}
                     >
-                      <Ionicons name="close-circle" size={20} color="#F44336" />
+                      <Ionicons name="close" size={14} color="#F44336" />
                     </TouchableOpacity>
                   </View>
                 ))}
@@ -189,8 +172,8 @@ export default function TeamSetupScreen() {
                   style={styles.addPlayerButton}
                   onPress={() => addPlayerToTeam(team.id)}
                 >
-                  <Ionicons name="add" size={20} color="#FBAA12" />
-                  <Text style={styles.addPlayerText}>{t("game.addPlayer")}</Text>
+                  <Ionicons name="add" size={16} color="#FBAA12" />
+                  <Text style={styles.addPlayerText}>Add Player</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -212,7 +195,7 @@ export default function TeamSetupScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -220,64 +203,65 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.tadado.primary,
+    paddingTop: 44, // Status bar height
   },
   scrollContainer: {
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 100,
+    paddingBottom: 80,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.md,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   backButton: {
-    padding: Spacing.sm,
+    padding: 8,
   },
   title: {
     ...Typography.heading.semiBold,
-    fontSize: FontSizes.xl,
+    fontSize: 18,
     color: "#FBAA12",
     flex: 1,
     textAlign: "center",
   },
   placeholder: {
-    width: 40,
+    width: 32,
   },
   teamsContainer: {
-    paddingHorizontal: Spacing.lg,
-    gap: Spacing.lg,
+    paddingHorizontal: 16,
+    gap: 16,
   },
   teamCard: {
     backgroundColor: "#1a0a2b",
-    borderRadius: 20,
-    padding: Spacing.lg,
+    borderRadius: 16,
+    padding: 16,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
   teamHeader: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: Spacing.md,
+    marginBottom: 12,
   },
   teamIconContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: "#FBAA12",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: Spacing.md,
+    marginRight: 12,
   },
   teamNumber: {
     ...Typography.heading.semiBold,
-    fontSize: FontSizes.lg,
+    fontSize: 16,
     color: "#2a0a3b",
   },
   teamInfo: {
@@ -285,98 +269,90 @@ const styles = StyleSheet.create({
   },
   teamName: {
     ...Typography.heading.semiBold,
-    fontSize: FontSizes.lg,
+    fontSize: 16,
     color: "#FBAA12",
-    marginBottom: Spacing.xs,
+    marginBottom: 4,
   },
   teamNameInput: {
     ...Typography.heading.semiBold,
-    fontSize: FontSizes.lg,
+    fontSize: 16,
     color: "#FBAA12",
     backgroundColor: "#2a0a3b",
     borderRadius: 8,
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.xs,
-    marginBottom: Spacing.xs,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    marginBottom: 4,
   },
   playerCount: {
     ...Typography.body.medium,
-    fontSize: FontSizes.sm,
+    fontSize: 12,
     color: "#ffffff",
     opacity: 0.7,
   },
-  teamActions: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  editActions: {
-    flexDirection: "row",
-    gap: Spacing.sm,
-  },
-  actionButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  editButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     backgroundColor: "#2a0a3b",
     alignItems: "center",
     justifyContent: "center",
   },
   playersContainer: {
-    gap: Spacing.sm,
+    gap: 8,
   },
   playerItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#2a0a3b",
-    borderRadius: 12,
-    padding: Spacing.sm,
+    borderRadius: 8,
+    padding: 8,
   },
   playerName: {
     ...Typography.body.medium,
-    fontSize: FontSizes.base,
+    fontSize: 14,
     color: "#ffffff",
     flex: 1,
   },
   removeButton: {
-    padding: Spacing.xs,
+    padding: 4,
   },
   addPlayerButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#2a0a3b",
-    borderRadius: 12,
-    padding: Spacing.sm,
-    borderWidth: 2,
+    borderRadius: 8,
+    padding: 8,
+    borderWidth: 1,
     borderColor: "#FBAA12",
     borderStyle: "dashed",
-    gap: Spacing.xs,
+    gap: 6,
   },
   addPlayerText: {
     ...Typography.body.medium,
-    fontSize: FontSizes.base,
+    fontSize: 12,
     color: "#FBAA12",
   },
   startContainer: {
-    paddingHorizontal: Spacing.lg,
-    marginTop: Spacing.xl,
+    paddingHorizontal: 16,
+    marginTop: 20,
   },
   startButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FBAA12",
-    borderRadius: 24,
-    padding: Spacing.lg,
-    gap: Spacing.sm,
+    borderRadius: 16,
+    padding: 16,
+    gap: 8,
   },
   disabledButton: {
     backgroundColor: "#666",
   },
   startButtonText: {
     ...Typography.heading.semiBold,
-    fontSize: FontSizes.lg,
+    fontSize: 16,
     color: "#2a0a3b",
   },
 });
