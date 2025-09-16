@@ -9,13 +9,13 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { router } from "expo-router";
 import React from "react";
 import {
-  Alert,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -54,7 +54,8 @@ export default function HomeScreen() {
   };
 
   const handleGameCardPress = (type: string) => {
-    Alert.alert(`${type}`, t("games.navigate", { type }));
+    // Navigate to game mode selection with category
+    router.push(`/(tabs)/game?category=${type}`);
   };
 
   const handlePreviewPress = (type: string) => {
@@ -62,10 +63,12 @@ export default function HomeScreen() {
   };
 
   const handleCardPress = (index: number) => {
-    Alert.alert(
-      t("cards.cardPressed"),
-      t("cards.cardWasPressed", { number: (index + 1).toString() })
-    );
+    // Map index to category type
+    const categories = ['romance', 'travel', 'adventure', 'party'];
+    const category = categories[index];
+    if (category) {
+      handleGameCardPress(category);
+    }
   };
 
   const handleBuyPress = (index: number) => {
