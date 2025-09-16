@@ -252,23 +252,50 @@ export class GameService {
     bestScore?: number;
   }): Promise<void> {
     try {
-      const { error } = await supabase
+      // First check if statistics exist for this user
+      const { data: existingStats } = await supabase
         .from('game_statistics')
-        .upsert({
-          user_id: userId,
-          total_games_played: stats.gamesPlayed || 0,
-          total_games_won: stats.gamesWon || 0,
-          total_cards_guessed: stats.cardsGuessed || 0,
-          total_cards_passed: stats.cardsPassed || 0,
-          total_cards_failed: stats.cardsFailed || 0,
-          average_score_per_game: stats.averageScore || 0,
-          best_score: stats.bestScore || 0,
-        }, {
-          onConflict: 'user_id'
-        });
+        .select('id')
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      if (existingStats) {
+        // Update existing stats
+        const { error } = await supabase
+          .from('game_statistics')
+          .update({
+            total_games_played: stats.gamesPlayed || 0,
+            total_games_won: stats.gamesWon || 0,
+            total_cards_guessed: stats.cardsGuessed || 0,
+            total_cards_passed: stats.cardsPassed || 0,
+            total_cards_failed: stats.cardsFailed || 0,
+            average_score_per_game: stats.averageScore || 0,
+            best_score: stats.bestScore || 0,
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId);
 
-      if (error) {
-        throw new Error(error.message);
+        if (error) {
+          throw new Error(error.message);
+        }
+      } else {
+        // Insert new stats
+        const { error } = await supabase
+          .from('game_statistics')
+          .insert({
+            user_id: userId,
+            total_games_played: stats.gamesPlayed || 0,
+            total_games_won: stats.gamesWon || 0,
+            total_cards_guessed: stats.cardsGuessed || 0,
+            total_cards_passed: stats.cardsPassed || 0,
+            total_cards_failed: stats.cardsFailed || 0,
+            average_score_per_game: stats.averageScore || 0,
+            best_score: stats.bestScore || 0
+          });
+
+        if (error) {
+          throw new Error(error.message);
+        }
       }
     } catch (error) {
       console.error('Error updating game statistics:', error);

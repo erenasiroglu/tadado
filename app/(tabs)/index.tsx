@@ -9,13 +9,12 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { router } from "expo-router";
 import React from "react";
 import {
-    Alert,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -140,59 +139,6 @@ export default function HomeScreen() {
               onPreview={() => handlePreviewPress(t("games.yourOwnStyle"))}
             />
           </View>
-
-          {/* User Profile Section (if authenticated) */}
-          {session && user && (
-            <View style={styles.userSection}>
-              <Text style={styles.userSectionTitle}>
-                {t("home.yourProfile")}
-              </Text>
-              <View style={styles.userCard}>
-                <Text style={styles.username}>@{user.username}</Text>
-                <Text style={styles.userEmail}>{session.user.email}</Text>
-
-                <View style={styles.userStats}>
-                  <View style={styles.statItem}>
-                    <Text style={styles.statLabel}>{t("common.language")}</Text>
-                    <Text style={styles.statValue}>{user.language}</Text>
-                  </View>
-                  <View style={styles.statItem}>
-                    <Text style={styles.statLabel}>{t("common.premium")}</Text>
-                    <Text
-                      style={[
-                        styles.statValue,
-                        user.is_premium && styles.premiumText,
-                      ]}
-                    >
-                      {user.is_premium ? t("home.premium") : t("home.standard")}
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.userActions}>
-                  <TouchableOpacity
-                    style={styles.actionButton}
-                    onPress={handleTogglePremium}
-                  >
-                    <Text style={styles.actionButtonText}>
-                      {user.is_premium
-                        ? t("home.cancelPremium")
-                        : t("home.goPremium")}
-                    </Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.actionButton, styles.signOutButton]}
-                    onPress={handleSignOut}
-                  >
-                    <Text style={styles.signOutText}>
-                      {t("common.signOut")}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -349,3 +295,5 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
 });
+
+

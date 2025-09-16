@@ -43,12 +43,15 @@ export default {
   tabs: {
     home: "Home",
     ask: "Ask",
+    profile: "Profile",
   },
   cards: {
     cardPressed: "Card Pressed",
     cardWasPressed: "Card {{number}} was pressed",
     buyPressed: "Buy Pressed",
     buyingCard: "Buying card {{number}} for $5.99",
+    exampleCards: "Example Cards",
+    exampleCardsDescription: "Try these sample cards to get started",
     romance: "ROMANCE",
     romanceDescription: "Fun Game About Relationships!",
     travel: "TRAVEL",
@@ -95,6 +98,15 @@ export default {
     cancelPremium: "Cancel Premium",
     premiumUpdated: "Premium status updated!",
     updateFailed: "Update failed",
+  },
+  profile: {
+    title: "Profile",
+    viewProfile: "View Profile",
+    accountSettings: "Account Settings",
+    memberSince: "Member Since",
+    updateSuccess: "Profile updated successfully!",
+    updateFailed: "Failed to update profile",
+    usernamePlaceholder: "Enter username",
   },
   games: {
     classicFun: "Classic Fun",

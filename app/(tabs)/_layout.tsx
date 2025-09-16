@@ -52,6 +52,20 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: t("tabs.profile"),
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={24}
+              color={color}
+            />
+          ),
+          href: null, // Hide from tab bar, will be accessed via ProfileButton
+        }}
+      />
     </Tabs>
   );
 }

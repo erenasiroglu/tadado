@@ -7,13 +7,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-    Animated,
-    Dimensions,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Animated,
+  Dimensions,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -143,13 +143,6 @@ export default function PlayingScreen() {
     }, 100);
   };
 
-  const togglePause = () => {
-    if (isPaused) {
-      resumeGame();
-    } else {
-      pauseGame();
-    }
-  };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -161,6 +154,21 @@ export default function PlayingScreen() {
     if (timeLeft <= 10) return "#F44336";
     if (timeLeft <= 30) return "#FF9800";
     return "#4CAF50";
+  };
+
+  const getCategoryBackgroundColor = (category: string) => {
+    switch (category) {
+      case "romance":
+        return "rgba(255, 44, 122, 0.1)";
+      case "travel":
+        return "rgba(93, 51, 145, 0.1)";
+      case "adventure":
+        return "rgba(34, 139, 34, 0.1)";
+      case "party":
+        return "rgba(255, 165, 0, 0.1)";
+      default:
+        return "rgba(26, 10, 43, 0.8)";
+    }
   };
 
   // Timer pulse animation when time is running low
@@ -219,7 +227,7 @@ export default function PlayingScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Top Header */}
+      {/* Top Header - Simplified */}
       <View style={styles.topHeader}>
         <TouchableOpacity
           style={styles.headerButton}
@@ -237,16 +245,19 @@ export default function PlayingScreen() {
           </Text>
         </View>
 
-        <TouchableOpacity
-          style={styles.headerButton}
-          onPress={togglePause}
-        >
-          <Ionicons 
-            name={isPaused ? "play" : "pause"} 
-            size={24} 
-            color="#FBAA12" 
-          />
-        </TouchableOpacity>
+        <View style={styles.timerContainer}>
+          <Animated.Text
+            style={[
+              styles.timerText,
+              {
+                color: getTimerColor(timeLeft),
+                transform: [{ scale: pulseAnim }],
+              },
+            ]}
+          >
+            {formatTime(timeLeft)}
+          </Animated.Text>
+        </View>
       </View>
 
       {/* Score Board */}
@@ -262,22 +273,7 @@ export default function PlayingScreen() {
         </View>
       </View>
 
-      {/* Timer */}
-      <View style={styles.timerContainer}>
-        <Animated.Text
-          style={[
-            styles.timerText,
-            {
-              color: getTimerColor(timeLeft),
-              transform: [{ scale: pulseAnim }],
-            },
-          ]}
-        >
-          {formatTime(timeLeft)}
-        </Animated.Text>
-      </View>
-
-      {/* Game Card - Direct display without tap to reveal */}
+      {/* Game Card - Enhanced with category-specific background */}
       <View style={styles.cardContainer}>
         <Animated.View
           style={[
@@ -291,7 +287,7 @@ export default function PlayingScreen() {
             },
           ]}
         >
-          <View style={styles.cardBack}>
+          <View style={[styles.cardBack, { backgroundColor: getCategoryBackgroundColor(category) }]}>
             <View style={styles.difficultyBadge}>
               <Text style={styles.difficultyText}>
                 {currentCard.difficulty === 1 ? 'Easy' : currentCard.difficulty === 2 ? 'Medium' : 'Hard'}
@@ -299,6 +295,8 @@ export default function PlayingScreen() {
             </View>
             
             <Text style={styles.wordText}>{currentCard.word}</Text>
+            
+            <View style={styles.divider} />
             
             <View style={styles.forbiddenContainer}>
               <Text style={styles.forbiddenTitle}>Don&apos;t say:</Text>
@@ -314,7 +312,7 @@ export default function PlayingScreen() {
         </Animated.View>
       </View>
 
-      {/* Action Buttons */}
+      {/* Action Buttons - Redesigned */}
       <Animated.View
         style={[
           styles.actionButtons,
@@ -327,7 +325,9 @@ export default function PlayingScreen() {
           style={[styles.actionButton, styles.correctButton]}
           onPress={() => handleCardActionWrapper('correct')}
         >
-          <Ionicons name="checkmark" size={24} color="#ffffff" />
+          <View style={styles.buttonIconContainer}>
+            <Ionicons name="checkmark-circle" size={28} color="#4CAF50" />
+          </View>
           <Text style={styles.actionButtonText}>Correct</Text>
         </TouchableOpacity>
 
@@ -335,7 +335,9 @@ export default function PlayingScreen() {
           style={[styles.actionButton, styles.passButton]}
           onPress={() => handleCardActionWrapper('pass')}
         >
-          <Ionicons name="arrow-forward" size={24} color="#ffffff" />
+          <View style={styles.buttonIconContainer}>
+            <Ionicons name="arrow-forward-circle" size={28} color="#FF9800" />
+          </View>
           <Text style={styles.actionButtonText}>Pass</Text>
         </TouchableOpacity>
 
@@ -343,7 +345,9 @@ export default function PlayingScreen() {
           style={[styles.actionButton, styles.skipButton]}
           onPress={() => handleCardActionWrapper('skip')}
         >
-          <Ionicons name="close" size={24} color="#ffffff" />
+          <View style={styles.buttonIconContainer}>
+            <Ionicons name="close-circle" size={28} color="#F44336" />
+          </View>
           <Text style={styles.actionButtonText}>Skip</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -456,6 +460,9 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.md,
     backgroundColor: "rgba(26, 10, 43, 0.8)",
   },
+  timerContainer: {
+    alignItems: "center",
+  },
   headerButton: {
     width: 44,
     height: 44,
@@ -516,13 +523,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "#FBAA12",
   },
-  timerContainer: {
-    alignItems: "center",
-    marginVertical: 8,
-  },
   timerText: {
     ...Typography.heading.semiBold,
-    fontSize: 32,
+    fontSize: 24,
+    color: "#FBAA12",
   },
 
   // Game Card
@@ -538,22 +542,29 @@ const styles = StyleSheet.create({
     maxWidth: 320,
     aspectRatio: 0.75,
     backgroundColor: "#1a0a2b",
-    borderRadius: 20,
+    borderRadius: 24,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 12,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 16,
     overflow: "hidden",
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: "#FBAA12",
   },
   cardBack: {
     flex: 1,
-    padding: 20,
+    padding: 24,
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
+  },
+  divider: {
+    width: "80%",
+    height: 2,
+    backgroundColor: "rgba(251, 170, 18, 0.3)",
+    marginVertical: 20,
+    borderRadius: 1,
   },
   difficultyBadge: {
     position: "absolute",
@@ -622,39 +633,45 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: "row",
-    paddingHorizontal: 16,
-    paddingBottom: 20,
-    paddingTop: 16,
-    backgroundColor: "rgba(21, 5, 39, 0.95)",
-    gap: 12,
+    paddingHorizontal: 20,
+    paddingBottom: 30,
+    paddingTop: 20,
+    gap: 16,
   },
   actionButton: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 16,
-    paddingVertical: 14,
-    gap: 6,
+    borderRadius: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    backgroundColor: "rgba(26, 10, 43, 0.9)",
+    borderWidth: 2,
+    borderColor: "rgba(251, 170, 18, 0.3)",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
   correctButton: {
-    backgroundColor: "#4CAF50",
+    borderColor: "rgba(76, 175, 80, 0.5)",
   },
   passButton: {
-    backgroundColor: "#FF9800",
+    borderColor: "rgba(255, 152, 0, 0.5)",
   },
   skipButton: {
-    backgroundColor: "#F44336",
+    borderColor: "rgba(244, 67, 54, 0.5)",
+  },
+  buttonIconContainer: {
+    marginBottom: 8,
   },
   actionButtonText: {
-    ...Typography.heading.semiBold,
-    fontSize: 14,
+    ...Typography.body.semiBold,
+    fontSize: FontSizes.sm,
     color: "#ffffff",
+    textAlign: "center",
   },
 
   // Game End Modal Styles

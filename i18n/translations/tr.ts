@@ -43,12 +43,15 @@ export default {
   tabs: {
     home: "Ana Sayfa",
     ask: "Sor",
+    profile: "Profil",
   },
   cards: {
     cardPressed: "Karta Basıldı",
     cardWasPressed: "Kart {{number}} basıldı",
     buyPressed: "Satın Al'a Basıldı",
     buyingCard: "Kart {{number}} 5.99$ karşılığında satın alınıyor",
+    exampleCards: "Örnek Kartlar",
+    exampleCardsDescription: "Başlamak için bu örnek kartları deneyin",
     romance: "ROMANTİK",
     romanceDescription: "İlişkiler Hakkında Eğlenceli Oyun!",
     travel: "SEYAHAT",
@@ -95,6 +98,15 @@ export default {
     cancelPremium: "Premium'u İptal Et",
     premiumUpdated: "Premium durumu güncellendi!",
     updateFailed: "Güncelleme başarısız oldu",
+  },
+  profile: {
+    title: "Profil",
+    viewProfile: "Profili Görüntüle",
+    accountSettings: "Hesap Ayarları",
+    memberSince: "Üyelik Tarihi",
+    updateSuccess: "Profil başarıyla güncellendi!",
+    updateFailed: "Profil güncellenemedi",
+    usernamePlaceholder: "Kullanıcı adını girin",
   },
   games: {
     classicFun: "Klasik Eğlence",
