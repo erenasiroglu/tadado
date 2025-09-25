@@ -2,8 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 
-import { HapticTab } from "@/components/layout/HapticTab";
-import TabBarBackground from "@/components/layout/TabBarBackground";
+// Layout components removed for simplicity
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function TabLayout() {
@@ -15,8 +14,8 @@ export default function TabLayout() {
         tabBarActiveTintColor: "#FBAA12",
         tabBarInactiveTintColor: "#ffffff",
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
+        // tabBarButton: HapticTab,
+        // tabBarBackground: TabBarBackground,
         tabBarStyle: {
           backgroundColor: "#150527",
           borderTopWidth: 0,
@@ -29,7 +28,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t("tabs.home"),
+          title: t("home"),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "home" : "home-outline"}
@@ -37,33 +36,6 @@ export default function TabLayout() {
               color={color}
             />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="ask"
-        options={{
-          title: t("tabs.ask"),
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "chatbubbles" : "chatbubbles-outline"}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: t("tabs.profile"),
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "person" : "person-outline"}
-              size={24}
-              color={color}
-            />
-          ),
-          href: null, // Hide from tab bar, will be accessed via ProfileButton
         }}
       />
     </Tabs>

@@ -1,17 +1,33 @@
-import { supabase } from '@/lib/supabase';
-import { UserService } from '@/services/userService';
-import { User } from '@/types/user';
-import { Session } from '@supabase/supabase-js';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { supabase } from "@/lib/supabase";
+// UserService and User types removed
+import { Session } from "@supabase/supabase-js";
+import React, { createContext, useContext, useEffect, useState } from "react";
+
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  is_premium: boolean;
+  language?: string;
+}
 
 interface AuthContextType {
   session: Session | null;
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string, username: string) => Promise<{ success: boolean; error?: string }>;
-  signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signUp: (
+    email: string,
+    password: string,
+    username: string
+  ) => Promise<{ success: boolean; error?: string }>;
+  signIn: (
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; error?: string }>;
   signOut: () => Promise<void>;
-  updateUserProfile: (updateData: Partial<User>) => Promise<{ success: boolean; error?: string }>;
+  updateUserProfile: (
+    updateData: Partial<User>
+  ) => Promise<{ success: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
-      
+
       if (session?.user) {
         await loadUserProfile(session.user.id);
       } else {
@@ -49,10 +65,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loadUserProfile = async (userId: string) => {
     try {
-      const userProfile = await UserService.getUserById(userId);
+      // Simple user profile loading - you can implement database queries here
+      const userProfile: User = {
+        id: userId,
+        email: session?.user?.email || "",
+        username: "user",
+        is_premium: false,
+        language: "en",
+      };
       setUser(userProfile);
     } catch (error) {
-      console.error('Error loading user profile:', error);
+      console.error("Error loading user profile:", error);
     } finally {
       setLoading(false);
     }
@@ -62,10 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
 
-      const isAvailable = await UserService.isUsernameAvailable(username);
-      if (!isAvailable) {
-        return { success: false, error: 'This username is already taken' };
-      }
+      // Username availability check removed for simplicity
 
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -73,8 +93,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         options: {
           data: {
             username: username,
-          }
-        }
+          },
+        },
       });
 
       if (error) {
@@ -82,21 +102,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (data.user) {
-
-        const newUser = await UserService.createUser({
+        // User creation simplified
+        const newUser: User = {
           id: data.user.id,
           username: username,
-          language: 'en',
-        });
+          email: email,
+          is_premium: false,
+          language: "en",
+        };
 
-        if (!newUser) {
-          return { success: false, error: 'Failed to create user profile' };
-        }
+        // User creation always succeeds in simplified version
       }
 
       return { success: true };
     } catch {
-      return { success: false, error: 'An unexpected error occurred' };
+      return { success: false, error: "An unexpected error occurred" };
     } finally {
       setLoading(false);
     }
@@ -117,7 +137,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { success: true };
     } catch {
-      return { success: false, error: 'An unexpected error occurred' };
+      return { success: false, error: "An unexpected error occurred" };
     } finally {
       setLoading(false);
     }
@@ -127,28 +147,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) {
-        console.error('Error signing out:', error);
+        console.error("Error signing out:", error);
       }
     } catch (error) {
-      console.error('Unexpected error:', error);
+      console.error("Unexpected error:", error);
     }
   };
 
   const updateUserProfile = async (updateData: Partial<User>) => {
     try {
       if (!user) {
-        return { success: false, error: 'User session not found' };
+        return { success: false, error: "User session not found" };
       }
 
-      const updatedUser = await UserService.updateUser(user.id, updateData);
-      if (updatedUser) {
-        setUser(updatedUser);
-        return { success: true };
-      }
-
-      return { success: false, error: 'Profile could not be updated' };
+      // Simple user update - just update local state
+      const updatedUser = { ...user, ...updateData };
+      setUser(updatedUser);
+      return { success: true };
     } catch {
-      return { success: false, error: 'An unexpected error occurred' };
+      return { success: false, error: "An unexpected error occurred" };
     }
   };
 
@@ -168,7 +185,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

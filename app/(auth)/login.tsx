@@ -61,7 +61,7 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <LinearGradient
-        colors={[Colors.tadado.primary, "#2a0a3b"]}
+        colors={["#150527", "#1a0a2b", "#150527"]}
         style={styles.gradient}
       >
         <KeyboardAvoidingView
@@ -75,17 +75,16 @@ export default function LoginScreen() {
                 resizeMode="contain"
                 source={require("@/assets/images/tado.svg")}
               />
-              <Text style={styles.title}>{t("auth.welcomeBack")}</Text>
-              <Text style={styles.subtitle}>{t("auth.signInSubtitle")}</Text>
+              <Text style={styles.title}>{t("welcomeBack")}</Text>
+              <Text style={styles.subtitle}>{t("signInSubtitle")}</Text>
             </View>
 
             <View style={styles.form}>
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>{t("auth.email")}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder={t("auth.emailPlaceholder")}
-                  placeholderTextColor="#666"
+                  placeholder={t("emailPlaceholder")}
+                  placeholderTextColor="rgba(255, 255, 255, 0.4)"
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -95,11 +94,10 @@ export default function LoginScreen() {
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>{t("auth.password")}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder={t("auth.passwordPlaceholder")}
-                  placeholderTextColor="#666"
+                  placeholder={t("passwordPlaceholder")}
+                  placeholderTextColor="rgba(255, 255, 255, 0.4)"
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry
@@ -115,15 +113,15 @@ export default function LoginScreen() {
                 {loading ? (
                   <ActivityIndicator color="#2a0a3b" />
                 ) : (
-                  <Text style={styles.buttonText}>{t("auth.signIn")}</Text>
+                  <Text style={styles.buttonText}>{t("signIn")}</Text>
                 )}
               </TouchableOpacity>
 
               <View style={styles.footer}>
-                <Text style={styles.footerText}>{t("auth.noAccount")} </Text>
+                <Text style={styles.footerText}>{t("dontHaveAccount")} </Text>
                 <Link href="/(auth)/signup" asChild>
                   <TouchableOpacity>
-                    <Text style={styles.linkText}>{t("auth.signUp")}</Text>
+                    <Text style={styles.linkText}>{t("signUp")}</Text>
                   </TouchableOpacity>
                 </Link>
               </View>
@@ -197,33 +195,33 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   input: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
     borderWidth: 1,
-    borderColor: "rgba(251, 170, 18, 0.3)",
-    borderRadius: 16,
-    padding: Spacing.md,
-    fontSize: FontSizes.base,
+    borderColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
     color: "#ffffff",
     ...Typography.body.regular,
   },
   button: {
     backgroundColor: "#FBAA12",
-    padding: Spacing.md,
-    borderRadius: 16,
+    padding: 18,
+    borderRadius: 12,
     alignItems: "center",
-    marginTop: Spacing.sm,
+    marginTop: 24,
     shadowColor: "#FBAA12",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
   buttonDisabled: {
     backgroundColor: "rgba(251, 170, 18, 0.5)",
   },
   buttonText: {
     ...Typography.body.semiBold,
-    fontSize: FontSizes.lg,
+    fontSize: 16,
     color: "#2a0a3b",
   },
   footer: {

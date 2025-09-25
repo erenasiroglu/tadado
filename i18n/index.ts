@@ -1,51 +1,43 @@
-import en from './translations/en';
-import tr from './translations/tr';
+import en from "./translations/en";
+import tr from "./translations/tr";
+import { SupportedLanguage } from "./types";
 
-// All supported languages
 export const translations = {
   en,
   tr,
 };
 
-// Default language
-export const DEFAULT_LANGUAGE = 'en';
-
-// Available languages for selection
 export const AVAILABLE_LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'tr', name: 'Türkçe' },
+  { code: "en" as SupportedLanguage, name: "English" },
+  { code: "tr" as SupportedLanguage, name: "Türkçe" },
 ];
 
-/**
- * Get translation by key with optional interpolation
- * @param t Translation object
- * @param key Dot notation key (e.g. 'common.welcome')
- * @param params Optional params for interpolation
- * @returns Translated string
- */
-export const getTranslation = (t: any, key: string, params?: Record<string, string>): string => {
-  const keys = key.split('.');
-  let value = t;
-  
+export const DEFAULT_LANGUAGE: SupportedLanguage = "en";
+
+// Helper function to get nested translation value
+export const getTranslation = (
+  translations: any,
+  key: string,
+  params?: { [key: string]: string | number }
+): string => {
+  const keys = key.split(".");
+  let value = translations;
+
   // Navigate through the nested keys
   for (const k of keys) {
-    if (value && typeof value === 'object' && k in value) {
+    if (value && typeof value === "object" && k in value) {
       value = value[k];
     } else {
-      return key; // Return key if translation not found
+      return key; // Return the key if translation not found
     }
   }
-  
-  if (typeof value !== 'string') {
-    return key;
-  }
-  
-  // Handle interpolation with {{param}}
-  if (params) {
-    return value.replace(/\{\{(\w+)\}\}/g, (_, paramKey) => {
-      return params[paramKey] || `{{${paramKey}}}`;
+
+  // If value is a string, replace parameters
+  if (typeof value === "string" && params) {
+    return value.replace(/\{(\w+)\}/g, (match, paramKey) => {
+      return params[paramKey]?.toString() || match;
     });
   }
-  
-  return value;
+
+  return typeof value === "string" ? value : key;
 };

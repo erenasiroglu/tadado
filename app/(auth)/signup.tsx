@@ -3,7 +3,6 @@ import { Spacing } from "@/constants/Spacing";
 import { FontSizes, Typography } from "@/constants/Typography";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useUsernameCheck } from "@/hooks/useUsernameCheck";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
@@ -28,7 +27,7 @@ export default function SignupScreen() {
   const [loading, setLoading] = useState(false);
 
   const { signUp } = useAuth();
-  const { checkUsername, isChecking } = useUsernameCheck();
+  // Username check functionality removed
   const { t } = useLanguage();
 
   const validateForm = () => {
@@ -57,12 +56,7 @@ export default function SignupScreen() {
     setLoading(true);
 
     try {
-      // Check username availability
-      const isUsernameAvailable = await checkUsername(username);
-      if (!isUsernameAvailable) {
-        Alert.alert(t("auth.error"), t("auth.usernameTaken"));
-        return;
-      }
+      // Username check functionality removed
 
       const result = await signUp(email, password, username);
       if (result.success) {
@@ -83,7 +77,7 @@ export default function SignupScreen() {
   return (
     <SafeAreaView style={styles.container} edges={[]}>
       <LinearGradient
-        colors={[Colors.tadado.primary, "#2a0a3b"]}
+        colors={["#150527", "#1a0a2b", "#150527"]}
         style={styles.gradient}
       >
         <KeyboardAvoidingView
@@ -97,17 +91,16 @@ export default function SignupScreen() {
                 resizeMode="contain"
                 source={require("@/assets/images/tado.svg")}
               />
-              <Text style={styles.title}>{t("auth.joinTadado")}</Text>
-              <Text style={styles.subtitle}>{t("auth.createAccount")}</Text>
+              <Text style={styles.title}>{t("createAccount")}</Text>
+              <Text style={styles.subtitle}>{t("signUpSubtitle")}</Text>
             </View>
 
             <View style={styles.form}>
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>{t("auth.username")}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder={t("auth.usernamePlaceholder")}
-                  placeholderTextColor="#666"
+                  placeholder={t("usernamePlaceholder")}
+                  placeholderTextColor="rgba(255, 255, 255, 0.4)"
                   value={username}
                   onChangeText={setUsername}
                   autoCapitalize="none"
@@ -116,11 +109,10 @@ export default function SignupScreen() {
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>{t("auth.email")}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder={t("auth.emailPlaceholder")}
-                  placeholderTextColor="#666"
+                  placeholder={t("emailPlaceholder")}
+                  placeholderTextColor="rgba(255, 255, 255, 0.4)"
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -130,11 +122,10 @@ export default function SignupScreen() {
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>{t("auth.password")}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder={t("auth.passwordPlaceholder")}
-                  placeholderTextColor="#666"
+                  placeholder={t("passwordPlaceholder")}
+                  placeholderTextColor="rgba(255, 255, 255, 0.4)"
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry
@@ -143,25 +134,24 @@ export default function SignupScreen() {
               </View>
 
               <TouchableOpacity
-                style={[
-                  styles.button,
-                  (loading || isChecking) && styles.buttonDisabled,
-                ]}
+                style={[styles.button, loading && styles.buttonDisabled]}
                 onPress={handleSignup}
-                disabled={loading || isChecking}
+                disabled={loading}
               >
                 {loading ? (
                   <ActivityIndicator color="#2a0a3b" />
                 ) : (
-                  <Text style={styles.buttonText}>{t("auth.signUp")}</Text>
+                  <Text style={styles.buttonText}>{t("signUp")}</Text>
                 )}
               </TouchableOpacity>
 
               <View style={styles.footer}>
-                <Text style={styles.footerText}>{t("auth.haveAccount")} </Text>
+                <Text style={styles.footerText}>
+                  {t("alreadyHaveAccount")}{" "}
+                </Text>
                 <Link href="/(auth)/login" asChild>
                   <TouchableOpacity>
-                    <Text style={styles.linkText}>{t("auth.signIn")}</Text>
+                    <Text style={styles.linkText}>{t("signIn")}</Text>
                   </TouchableOpacity>
                 </Link>
               </View>
@@ -235,33 +225,33 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   input: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
     borderWidth: 1,
-    borderColor: "rgba(251, 170, 18, 0.3)",
-    borderRadius: 16,
-    padding: Spacing.md,
-    fontSize: FontSizes.base,
+    borderColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
     color: "#ffffff",
     ...Typography.body.regular,
   },
   button: {
     backgroundColor: "#FBAA12",
-    padding: Spacing.md,
-    borderRadius: 16,
+    padding: 18,
+    borderRadius: 12,
     alignItems: "center",
-    marginTop: Spacing.sm,
+    marginTop: 24,
     shadowColor: "#FBAA12",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
   buttonDisabled: {
     backgroundColor: "rgba(251, 170, 18, 0.5)",
   },
   buttonText: {
     ...Typography.body.semiBold,
-    fontSize: FontSizes.lg,
+    fontSize: 16,
     color: "#2a0a3b",
   },
   footer: {

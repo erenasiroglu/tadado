@@ -8,9 +8,18 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 interface CardProps {
   title: string;
   description: string;
-  type: "romance" | "travel" | "adventure" | "party" | string;
+  type:
+    | "romance"
+    | "travel"
+    | "adventure"
+    | "party"
+    | "dirtyMinds"
+    | "celebrities"
+    | string;
   onPress: () => void;
   onBuy: () => void;
+  isNew?: boolean;
+  isFree?: boolean;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -19,6 +28,8 @@ export const Card: React.FC<CardProps> = ({
   type,
   onPress,
   onBuy,
+  isNew = false,
+  isFree = false,
 }) => {
   const { t } = useLanguage();
   // Determine gradient colors based on type
@@ -32,6 +43,10 @@ export const Card: React.FC<CardProps> = ({
         return ["rgba(34, 139, 34, 0.8)", "rgba(0, 100, 0, 0.8)"];
       case "party":
         return ["rgba(255, 165, 0, 0.8)", "rgba(255, 69, 0, 0.8)"];
+      case "dirtyMinds":
+        return ["rgba(217, 33, 81, 0.85)", "rgba(42, 10, 59, 0.9)"];
+      case "celebrities":
+        return ["rgba(255, 215, 0, 0.8)", "rgba(255, 140, 0, 0.8)"];
       default:
         return ["rgba(56, 20, 93, 0.8)", "rgba(93, 51, 145, 0.8)"];
     }
@@ -48,6 +63,10 @@ export const Card: React.FC<CardProps> = ({
         return "#0F4C0F";
       case "party":
         return "#B8860B";
+      case "dirtyMinds":
+        return "#2a0a3b";
+      case "celebrities":
+        return "#B8860B";
       default:
         return "#38145D";
     }
@@ -62,6 +81,10 @@ export const Card: React.FC<CardProps> = ({
       case "adventure":
         return "#90EE90";
       case "party":
+        return "#FFD700";
+      case "dirtyMinds":
+        return "#FBAA12";
+      case "celebrities":
         return "#FFD700";
       default:
         return "#FBAA12";
@@ -78,6 +101,10 @@ export const Card: React.FC<CardProps> = ({
         return "#90EE90";
       case "party":
         return "#FFD700";
+      case "dirtyMinds":
+        return "#FBAA12";
+      case "celebrities":
+        return "#FFD700";
       default:
         return "#FBAA12";
     }
@@ -93,6 +120,10 @@ export const Card: React.FC<CardProps> = ({
         return "#32CD32";
       case "party":
         return "#FF8C00";
+      case "dirtyMinds":
+        return "#D92151";
+      case "celebrities":
+        return "#FFD700";
       default:
         return "#6E4EA3";
     }
@@ -113,17 +144,19 @@ export const Card: React.FC<CardProps> = ({
         />
 
         {/* NEW Button */}
-        <View style={styles.newButtonContainer}>
-          <View
-            style={[styles.newButton, { backgroundColor: getButtonColor() }]}
-          >
-            <Text
-              style={[styles.newButtonText, { color: getButtonTextColor() }]}
+        {isNew && (
+          <View style={styles.newButtonContainer}>
+            <View
+              style={[styles.newButton, { backgroundColor: getButtonColor() }]}
             >
-              {t("common.new")}
-            </Text>
+              <Text
+                style={[styles.newButtonText, { color: getButtonTextColor() }]}
+              >
+                {t("new")}
+              </Text>
+            </View>
           </View>
-        </View>
+        )}
 
         {/* Content Container */}
         <View style={styles.contentContainer}>
@@ -144,28 +177,30 @@ export const Card: React.FC<CardProps> = ({
           {/* Title and Description */}
           <View style={styles.textSection}>
             <Text style={[styles.title, { color: getTextColor() }]}>
-              {t(`cards.${type}`)}
+              {t(type)}
             </Text>
             <Text style={[styles.description, { color: getTextColor() }]}>
-              {t(`cards.${type}Description`)}
+              {t(`${type}Description`)}
             </Text>
           </View>
         </View>
 
-        {/* BUY Button */}
-        <View style={styles.buyButtonContainer}>
-          <TouchableOpacity
-            style={[styles.buyButton, { backgroundColor: getButtonColor() }]}
-            onPress={onBuy}
-            activeOpacity={0.8}
-          >
-            <Text
-              style={[styles.buyButtonText, { color: getButtonTextColor() }]}
+        {/* BUY Button (hidden for free cards) */}
+        {!isFree && (
+          <View style={styles.buyButtonContainer}>
+            <TouchableOpacity
+              style={[styles.buyButton, { backgroundColor: getButtonColor() }]}
+              onPress={onBuy}
+              activeOpacity={0.8}
             >
-              {t("common.buy", { price: "5.99$" })}
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={[styles.buyButtonText, { color: getButtonTextColor() }]}
+              >
+                {t("buy", { price: "2.99$" })}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </TouchableOpacity>
     </View>
   );

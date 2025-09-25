@@ -4,57 +4,60 @@
     "slug": "tadado",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/tadado_icon.png",
     "scheme": "tadado",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+        "image": "./assets/images/tadado_icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#150527"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/tadado_icon.png",
+        "backgroundColor": "#150527"
+      },
+      "splash": {
+        "image": "./assets/images/tadado_icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#150527"
       },
       "edgeToEdgeEnabled": true
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/tadado_icon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/tadado_icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#150527"
         }
       ]
     ],
+    "splash": {
+      "image": "./assets/images/tadado_icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#150527"
+    },
     "fonts": [
       {
-        "asset": "./assets/fonts/Poppins-Regular.ttf",
-        "family": "Poppins-Regular"
+        "asset": "./assets/fonts/ChauPhilomeneOne-Regular copy.ttf",
+        "family": "ChauPhilomeneOne-Regular"
       },
       {
-        "asset": "./assets/fonts/Poppins-Medium.ttf",
-        "family": "Poppins-Medium"
-      },
-      {
-        "asset": "./assets/fonts/Poppins-Light.ttf",
-        "family": "Poppins-Light"
-      },
-      {
-        "asset": "./assets/fonts/Poppins-SemiBold.ttf",
-        "family": "Poppins-SemiBold"
-      },
-      {
-        "asset": "./assets/fonts/Poppins-Bold.ttf",
-        "family": "Poppins-Bold"
+        "asset": "./assets/fonts/ChauPhilomeneOne-Italic.ttf",
+        "family": "ChauPhilomeneOne-Italic"
       }
     ],
     "experiments": {

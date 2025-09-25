@@ -3,18 +3,19 @@ import { Spacing } from "@/constants/Spacing";
 import { FontSizes, Typography } from "@/constants/Typography";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { SupportedLanguage } from "@/i18n/types";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
-    Alert,
-    Animated,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View
+  Alert,
+  Animated,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 
 interface ProfileButtonProps {
@@ -26,7 +27,7 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ size = 40 }) => {
   const { t, locale, setLocale, locales } = useLanguage();
   const [menuVisible, setMenuVisible] = useState(false);
   const scaleAnim = useRef(new Animated.Value(0)).current;
-  
+
   const toggleMenu = () => {
     if (menuVisible) {
       // Close menu with animation
@@ -50,28 +51,29 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ size = 40 }) => {
 
   const handleProfilePress = () => {
     toggleMenu();
-    if (session && user) {
-      router.push("/(tabs)/profile");
-    } else {
+    if (!session || !user) {
       router.push("/(auth)/login");
     }
   };
-  
-  const handleLanguageChange = async (lang: { code: string, name: string }) => {
+
+  const handleLanguageChange = async (lang: {
+    code: SupportedLanguage;
+    name: string;
+  }) => {
     if (!user) return;
-    
+
     toggleMenu();
-    
+
     try {
       // Update language in context
       await setLocale(lang.code as any);
-      
+
       // Update user profile in database if user is logged in
       if (session) {
         const result = await updateUserProfile({
           language: lang.code,
         });
-        
+
         if (!result.success) {
           console.error("Failed to update language in profile:", result.error);
         }
@@ -80,13 +82,13 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ size = 40 }) => {
       console.error("Error changing language:", error);
     }
   };
-  
+
   const handleSignOut = () => {
     toggleMenu();
-    Alert.alert(t("auth.signOut"), t("auth.signOutConfirm"), [
-      { text: t("common.cancel"), style: "cancel" },
+    Alert.alert(t("signOut"), t("signOutConfirm"), [
+      { text: t("cancel"), style: "cancel" },
       {
-        text: t("auth.signOut"),
+        text: t("signOut"),
         style: "destructive",
         onPress: signOut,
       },
@@ -109,17 +111,10 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ size = 40 }) => {
           </Text>
         ) : (
           // User is not logged in, show user icon
-          <FontAwesome name="user" size={size / 2} color="#ffffff" />
-        )}
-        
-        {/* Premium user badge */}
-        {session && user && user.is_premium && (
-          <View style={styles.premiumBadge}>
-            <Text style={styles.premiumBadgeText}>⭐</Text>
-          </View>
+          <FontAwesome name="user" size={size / 2.5} color="#FBAA12" />
         )}
       </TouchableOpacity>
-      
+
       {/* Dropdown Menu Modal */}
       <Modal
         transparent={true}
@@ -130,77 +125,72 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ size = 40 }) => {
         <TouchableWithoutFeedback onPress={toggleMenu}>
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
-              <Animated.View 
+              <Animated.View
                 style={[
                   styles.menuContainer,
                   {
-                    transform: [
-                      { scale: scaleAnim },
-                    ],
+                    transform: [{ scale: scaleAnim }],
                     opacity: scaleAnim,
-                  }
+                  },
                 ]}
               >
-                {/* User info section */}
+                {/* User info section - simplified */}
                 {session && user ? (
                   <View style={styles.userInfoSection}>
-                    <View style={styles.userAvatar}>
-                      <Text style={styles.userAvatarText}>
-                        {user.username.charAt(0).toUpperCase()}
-                      </Text>
-                    </View>
-                    <View style={styles.userTextContainer}>
-                      <Text style={styles.userName}>@{user.username}</Text>
-                      <Text style={styles.userEmail}>{session.user.email}</Text>
-                    </View>
+                    <Text style={styles.userName}>@{user.username}</Text>
                   </View>
                 ) : null}
-                
-                {/* Menu items */}
-                <TouchableOpacity 
-                  style={styles.menuItem} 
-                  onPress={handleProfilePress}
-                >
-                  <FontAwesome name="user" size={18} color="#FBAA12" />
-                  <Text style={styles.menuItemText}>
-                    {session && user ? t("profile.viewProfile") : t("auth.signIn")}
-                  </Text>
-                </TouchableOpacity>
-                
+
+                {/* Sign in button for non-logged users */}
+                {!session || !user ? (
+                  <TouchableOpacity
+                    style={styles.signInButton}
+                    onPress={handleProfilePress}
+                  >
+                    <FontAwesome name="sign-in" size={16} color="#FBAA12" />
+                    <Text style={styles.signInText}>{t("signIn")}</Text>
+                  </TouchableOpacity>
+                ) : null}
+
                 {/* Language selector */}
                 <View style={styles.languageSection}>
-                  <Text style={styles.languageTitle}>{t("common.language")}</Text>
                   <View style={styles.languageOptions}>
-                    {locales.map((lang) => (
-                      <TouchableOpacity
-                        key={lang.code}
-                        style={[
-                          styles.languageOption,
-                          locale === lang.code && styles.activeLanguage,
-                        ]}
-                        onPress={() => handleLanguageChange(lang)}
-                      >
-                        <Text 
+                    {locales.map(
+                      (lang: { code: SupportedLanguage; name: string }) => (
+                        <TouchableOpacity
+                          key={lang.code}
                           style={[
-                            styles.languageText,
-                            locale === lang.code && styles.activeLanguageText,
+                            styles.languageOption,
+                            locale === lang.code && styles.activeLanguage,
                           ]}
+                          onPress={() => handleLanguageChange(lang)}
                         >
-                          {lang.code.toUpperCase()}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
+                          <Text
+                            style={[
+                              styles.languageText,
+                              locale === lang.code && styles.activeLanguageText,
+                            ]}
+                          >
+                            {lang.code.toUpperCase()}
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    )}
                   </View>
                 </View>
-                
+
                 {/* Sign out option (only if logged in) */}
                 {session && user && (
-                  <TouchableOpacity 
-                    style={[styles.menuItem, styles.signOutItem]} 
+                  <TouchableOpacity
+                    style={[styles.menuItem, styles.signOutItem]}
                     onPress={handleSignOut}
                   >
-                    <Ionicons name="log-out-outline" size={20} color="#D92151" />
-                    <Text style={styles.signOutText}>{t("common.signOut")}</Text>
+                    <Ionicons
+                      name="log-out-outline"
+                      size={20}
+                      color="#D92151"
+                    />
+                    <Text style={styles.signOutText}>{t("signOut")}</Text>
                   </TouchableOpacity>
                 )}
               </Animated.View>
@@ -246,28 +236,25 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   menuContainer: {
-    backgroundColor: "#1a0a2b",
-    borderRadius: 16,
-    marginTop: 60,
+    backgroundColor: "rgba(26, 10, 43, 0.95)",
+    borderRadius: 12,
+    marginTop: 80,
     marginRight: 16,
-    width: 250,
-    paddingVertical: Spacing.md,
+    width: 200,
+    paddingVertical: 16,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
     borderWidth: 1,
-    borderColor: "rgba(251, 170, 18, 0.3)",
+    borderColor: "rgba(255, 255, 255, 0.1)",
   },
   userInfoSection: {
-    flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: Spacing.md,
-    paddingBottom: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255, 255, 255, 0.1)",
-    marginBottom: Spacing.md,
+    paddingHorizontal: 16,
+    paddingBottom: 8,
+    marginBottom: 8,
   },
   userAvatar: {
     width: 40,
@@ -290,7 +277,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     ...Typography.body.semiBold,
-    fontSize: FontSizes.base,
+    fontSize: 14,
     color: "#FBAA12",
   },
   userEmail: {
@@ -313,48 +300,65 @@ const styles = StyleSheet.create({
     marginLeft: Spacing.md,
   },
   languageSection: {
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: "rgba(255, 255, 255, 0.1)",
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255, 255, 255, 0.1)",
-    marginVertical: Spacing.md,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginVertical: 4,
   },
   languageTitle: {
     ...Typography.body.semiBold,
-    fontSize: FontSizes.sm,
+    fontSize: 12,
     color: "#FBAA12",
-    marginBottom: Spacing.sm,
+    marginBottom: 8,
   },
   languageOptions: {
     flexDirection: "row",
-    gap: Spacing.sm,
+    gap: 8,
   },
   languageOption: {
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
-    borderRadius: 4,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.1)",
   },
   activeLanguage: {
     backgroundColor: "#FBAA12",
+    borderColor: "#FBAA12",
   },
   languageText: {
     ...Typography.body.medium,
-    fontSize: FontSizes.sm,
+    fontSize: 12,
     color: "#ffffff",
   },
   activeLanguageText: {
     color: "#1a0a2b",
   },
   signOutItem: {
-    marginTop: Spacing.xs,
+    marginTop: 4,
   },
   signOutText: {
     ...Typography.body.medium,
-    fontSize: FontSizes.base,
+    fontSize: 14,
     color: "#D92151",
-    marginLeft: Spacing.md,
+    marginLeft: 12,
+  },
+  signInButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginHorizontal: 16,
+    marginVertical: 4,
+    borderRadius: 8,
+    backgroundColor: "rgba(251, 170, 18, 0.1)",
+    borderWidth: 1,
+    borderColor: "rgba(251, 170, 18, 0.3)",
+  },
+  signInText: {
+    ...Typography.body.medium,
+    fontSize: 14,
+    color: "#FBAA12",
+    marginLeft: 8,
   },
 });
