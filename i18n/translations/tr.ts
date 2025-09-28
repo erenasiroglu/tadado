@@ -16,7 +16,7 @@ export default {
   adventureDescription: "Heyecan verici görevler ve zorlu mücadeleler",
   partyDescription: "Eğlenceli oyunlar ve parti aktiviteleri",
   dirtyMindsDescription: "Ateşli sorular & şehvetli meydan okumalar",
-  celebritiesDescription: "Ünlü isimler, dedikodular ve yıldız sırları",
+  celebritiesDescription: "Ünlü isimler",
   signIn: "Giriş Yap",
   signUp: "Kayıt Ol",
   signOutConfirm: "Çıkış yapmak istediğinizden emin misiniz?",

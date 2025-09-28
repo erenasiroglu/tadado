@@ -16,7 +16,7 @@ export default {
   adventureDescription: "Thrilling quests and exciting challenges",
   partyDescription: "Fun games and party activities",
   dirtyMindsDescription: "Spicy questions  naughty challenges",
-  celebritiesDescription: "Celebrity names, gossip and star secrets",
+  celebritiesDescription: "Celebrity names",
   signIn: "Sign In",
   signUp: "Sign Up",
   signOutConfirm: "Are you sure you want to sign out?",
