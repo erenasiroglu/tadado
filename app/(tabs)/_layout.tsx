@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 
-// Layout components removed for simplicity
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function TabLayout() {
@@ -11,13 +10,11 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#FBAA12",
+        tabBarActiveTintColor: "#fff5d4",
         tabBarInactiveTintColor: "#ffffff",
         headerShown: false,
-        // tabBarButton: HapticTab,
-        // tabBarBackground: TabBarBackground,
         tabBarStyle: {
-          backgroundColor: "#150527",
+          backgroundColor: "#25113e",
           borderTopWidth: 0,
           height: 60,
           paddingBottom: 8,

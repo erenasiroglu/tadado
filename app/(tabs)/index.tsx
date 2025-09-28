@@ -1,4 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,7 +13,7 @@ export default function HomeScreen() {
 
   const handleCardPress = (type: string) => {
     console.log(`Card pressed: ${type}`);
-    // TODO: Navigate to game or show details
+    router.push("/game-mode");
   };
 
   const handleBuyPress = (type: string) => {
@@ -20,14 +21,7 @@ export default function HomeScreen() {
     // TODO: Handle purchase
   };
 
-  const cardTypes = [
-    "romance",
-    "travel",
-    "adventure",
-    "party",
-    "dirtyMinds",
-    "celebrities",
-  ];
+  const cardTypes = ["travel", "adventure", "romance"];
 
   // NEW kartları belirle: tüm kartlar NEW (free olan dahil bazıları)
   const newCards = cardTypes;
@@ -36,7 +30,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       {/* Background Gradient */}
       <LinearGradient
-        colors={["#150527", "#1a0a2b", "#150527"]}
+        colors={["#25113e", "#32194e", "#25113f"]}
         style={StyleSheet.absoluteFill}
       />
 
@@ -61,7 +55,7 @@ export default function HomeScreen() {
             onPress={() => handleCardPress(type)}
             onBuy={() => handleBuyPress(type)}
             isNew={newCards.includes(type)}
-            isFree={type === cardTypes[0]}
+            isFree={type === "travel"}
           />
         ))}
       </ScrollView>

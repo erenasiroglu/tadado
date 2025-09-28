@@ -1,0 +1,94 @@
+{
+  "categories": {
+    "romance": {
+      "name": "Romance",
+      "cards": [
+        {
+          "id": "romance_1",
+          "mainWord": "Aşk",
+          "forbiddenWords": ["Sevgi", "Kalp", "Öpücük", "Romantik", "Çift"]
+        },
+        {
+          "id": "romance_2", 
+          "mainWord": "Evlilik",
+          "forbiddenWords": ["Nikah", "Düğün", "Yüzük", "Gelin", "Damat"]
+        },
+        {
+          "id": "romance_3",
+          "mainWord": "Flört",
+          "forbiddenWords": ["Buluşma", "Randevu", "Çıkma", "Kur", "Hoşlanma"]
+        },
+        {
+          "id": "romance_4",
+          "mainWord": "Ayrılık",
+          "forbiddenWords": ["Bitiş", "Veda", "Kopma", "Ayrı", "Son"]
+        },
+        {
+          "id": "romance_5",
+          "mainWord": "Tutku",
+          "forbiddenWords": ["Ateş", "Aşk", "İstek", "Arzu", "Heyecan"]
+        }
+      ]
+    },
+    "travel": {
+      "name": "Travel",
+      "cards": [
+        {
+          "id": "travel_1",
+          "mainWord": "Seyahat",
+          "forbiddenWords": ["Yolculuk", "Gezi", "Tatil", "Bavul", "Pasaport"]
+        },
+        {
+          "id": "travel_2",
+          "mainWord": "Uçak",
+          "forbiddenWords": ["Havacılık", "Pilot", "Kabin", "Motor", "Kanat"]
+        },
+        {
+          "id": "travel_3",
+          "mainWord": "Otel",
+          "forbiddenWords": ["Konaklama", "Resepsiyon", "Oda", "Rezervasyon", "Misafir"]
+        },
+        {
+          "id": "travel_4",
+          "mainWord": "Plaj",
+          "forbiddenWords": ["Kum", "Deniz", "Güneş", "Havlu", "Şemsiye"]
+        },
+        {
+          "id": "travel_5",
+          "mainWord": "Müze",
+          "forbiddenWords": ["Tarih", "Eser", "Sergi", "Antika", "Kültür"]
+        }
+      ]
+    },
+    "adventure": {
+      "name": "Adventure", 
+      "cards": [
+        {
+          "id": "adventure_1",
+          "mainWord": "Dağcılık",
+          "forbiddenWords": ["Tırmanış", "Zirve", "Kaya", "İp", "Kask"]
+        },
+        {
+          "id": "adventure_2",
+          "mainWord": "Kamp",
+          "forbiddenWords": ["Çadır", "Ateş", "Doğa", "Gece", "Çanta"]
+        },
+        {
+          "id": "adventure_3",
+          "mainWord": "Dalış",
+          "forbiddenWords": ["Su", "Balık", "Maske", "Palet", "Derinlik"]
+        },
+        {
+          "id": "adventure_4",
+          "mainWord": "Yürüyüş",
+          "forbiddenWords": ["Yol", "Ayak", "Adım", "Mesafe", "Patika"]
+        },
+        {
+          "id": "adventure_5",
+          "mainWord": "Keşif",
+          "forbiddenWords": ["Bulma", "Araştırma", "Yeni", "Bilinmeyen", "Macera"]
+        }
+      ]
+    }
+  }
+}

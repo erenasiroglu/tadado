@@ -1,5 +1,3 @@
-import Colors from "@/constants/Colors";
-import { Spacing } from "@/constants/Spacing";
 import { FontSizes, Typography } from "@/constants/Typography";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -111,7 +109,7 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ size = 40 }) => {
           </Text>
         ) : (
           // User is not logged in, show user icon
-          <FontAwesome name="user" size={size / 2.5} color="#FBAA12" />
+          <FontAwesome name="user" size={size / 2.5} color="#fff5d4" />
         )}
       </TouchableOpacity>
 
@@ -147,7 +145,7 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ size = 40 }) => {
                     style={styles.signInButton}
                     onPress={handleProfilePress}
                   >
-                    <FontAwesome name="sign-in" size={16} color="#FBAA12" />
+                    <FontAwesome name="sign-in" size={16} color="#fff5d4" />
                     <Text style={styles.signInText}>{t("signIn")}</Text>
                   </TouchableOpacity>
                 ) : null}
@@ -204,30 +202,16 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({ size = 40 }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1a0a2b",
+    backgroundColor: "#25113e",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#FBAA12",
+    borderColor: "#fff5d4",
   },
   initial: {
     ...Typography.heading.semiBold,
     fontSize: FontSizes.lg,
-    color: "#FBAA12",
-  },
-  premiumBadge: {
-    position: "absolute",
-    bottom: -5,
-    right: -5,
-    backgroundColor: Colors.tadado.primary,
-    borderRadius: 10,
-    width: 16,
-    height: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  premiumBadgeText: {
-    fontSize: 10,
+    color: "#fff5d4",
   },
   modalOverlay: {
     flex: 1,
@@ -236,19 +220,19 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   menuContainer: {
-    backgroundColor: "rgba(26, 10, 43, 0.95)",
-    borderRadius: 12,
+    backgroundColor: "rgba(50, 25, 78, 0.95)",
+    borderRadius: 16,
     marginTop: 80,
     marginRight: 16,
-    width: 200,
-    paddingVertical: 16,
+    width: 220,
+    paddingVertical: 20,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    elevation: 8,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.1)",
+    borderColor: "rgba(255, 245, 212, 0.2)",
   },
   userInfoSection: {
     alignItems: "center",
@@ -256,48 +240,10 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     marginBottom: 8,
   },
-  userAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#2a0a3b",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#FBAA12",
-    marginRight: Spacing.md,
-  },
-  userAvatarText: {
-    ...Typography.heading.semiBold,
-    fontSize: FontSizes.lg,
-    color: "#FBAA12",
-  },
-  userTextContainer: {
-    flex: 1,
-  },
   userName: {
     ...Typography.body.semiBold,
     fontSize: 14,
-    color: "#FBAA12",
-  },
-  userEmail: {
-    ...Typography.body.regular,
-    fontSize: FontSizes.sm,
-    color: "#ffffff",
-    opacity: 0.7,
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    marginBottom: Spacing.xs,
-  },
-  menuItemText: {
-    ...Typography.body.medium,
-    fontSize: FontSizes.base,
-    color: "#ffffff",
-    marginLeft: Spacing.md,
+    color: "#fff5d4",
   },
   languageSection: {
     paddingHorizontal: 16,
@@ -307,7 +253,7 @@ const styles = StyleSheet.create({
   languageTitle: {
     ...Typography.body.semiBold,
     fontSize: 12,
-    color: "#FBAA12",
+    color: "#fff5d4",
     marginBottom: 8,
   },
   languageOptions: {
@@ -323,8 +269,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255, 255, 255, 0.1)",
   },
   activeLanguage: {
-    backgroundColor: "#FBAA12",
-    borderColor: "#FBAA12",
+    backgroundColor: "#fff5d4",
+    borderColor: "#fff5d4",
   },
   languageText: {
     ...Typography.body.medium,
@@ -332,7 +278,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   activeLanguageText: {
-    color: "#1a0a2b",
+    color: "#25113e",
   },
   signOutItem: {
     marginTop: 4,
@@ -350,15 +296,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginHorizontal: 16,
     marginVertical: 4,
-    borderRadius: 8,
-    backgroundColor: "rgba(251, 170, 18, 0.1)",
+    borderRadius: 12,
+    backgroundColor: "rgba(255, 245, 212, 0.1)",
     borderWidth: 1,
-    borderColor: "rgba(251, 170, 18, 0.3)",
+    borderColor: "rgba(255, 245, 212, 0.3)",
   },
   signInText: {
     ...Typography.body.medium,
     fontSize: 14,
-    color: "#FBAA12",
+    color: "#fff5d4",
     marginLeft: 8,
   },
 });

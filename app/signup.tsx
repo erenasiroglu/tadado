@@ -63,7 +63,7 @@ export default function SignupScreen() {
         Alert.alert(t("auth.success"), t("auth.signupSuccess"), [
           {
             text: t("common.ok"),
-            onPress: () => router.replace("/(auth)/login"),
+            onPress: () => router.replace("/login"),
           },
         ]);
       } else {
@@ -149,7 +149,7 @@ export default function SignupScreen() {
                 <Text style={styles.footerText}>
                   {t("alreadyHaveAccount")}{" "}
                 </Text>
-                <Link href="/(auth)/login" asChild>
+                <Link href="/login" asChild>
                   <TouchableOpacity>
                     <Text style={styles.linkText}>{t("signIn")}</Text>
                   </TouchableOpacity>

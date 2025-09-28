@@ -1,0 +1,73 @@
+{
+  "category": "adventure",
+  "name": "Adventure",
+  "description": "Heyecan verici maceralar ve keşifler",
+  "color": "#4ECDC4",
+  "gradient": ["#4ECDC4", "#44A08D"],
+  "cards": [
+    {
+      "id": "adventure_1",
+      "mainWord": "Dağcılık",
+      "difficulty": "medium",
+      "forbiddenWords": ["Tırmanış", "Zirve", "Kaya", "İp", "Kask"],
+      "hints": ["Yüksek", "Spor", "Doğa"],
+      "tags": ["climbing", "mountain", "sport"]
+    },
+    {
+      "id": "adventure_2",
+      "mainWord": "Kamp",
+      "difficulty": "easy",
+      "forbiddenWords": ["Çadır", "Ateş", "Doğa", "Gece", "Çanta"],
+      "hints": ["Açık", "Hava", "Doğa"],
+      "tags": ["camping", "nature", "outdoor"]
+    },
+    {
+      "id": "adventure_3",
+      "mainWord": "Dalış",
+      "difficulty": "hard",
+      "forbiddenWords": ["Su", "Balık", "Maske", "Palet", "Derinlik"],
+      "hints": ["Deniz", "Spor", "Su"],
+      "tags": ["diving", "water", "sport"]
+    },
+    {
+      "id": "adventure_4",
+      "mainWord": "Yürüyüş",
+      "difficulty": "easy",
+      "forbiddenWords": ["Yol", "Ayak", "Adım", "Mesafe", "Patika"],
+      "hints": ["Doğa", "Spor", "Yürümek"],
+      "tags": ["hiking", "walking", "nature"]
+    },
+    {
+      "id": "adventure_5",
+      "mainWord": "Keşif",
+      "difficulty": "medium",
+      "forbiddenWords": ["Bulma", "Araştırma", "Yeni", "Bilinmeyen", "Macera"],
+      "hints": ["Yeni", "Araştırma", "Bilgi"],
+      "tags": ["exploration", "discovery", "adventure"]
+    },
+    {
+      "id": "adventure_6",
+      "mainWord": "Paraşüt",
+      "difficulty": "hard",
+      "forbiddenWords": ["Atlayış", "Hava", "Gökyüzü", "İp", "Yükseklik"],
+      "hints": ["Hava", "Spor", "Yüksek"],
+      "tags": ["skydiving", "air", "extreme"]
+    },
+    {
+      "id": "adventure_7",
+      "mainWord": "Rafting",
+      "difficulty": "medium",
+      "forbiddenWords": ["Nehir", "Su", "Kürek", "Bot", "Akıntı"],
+      "hints": ["Su", "Spor", "Nehir"],
+      "tags": ["rafting", "water", "sport"]
+    },
+    {
+      "id": "adventure_8",
+      "mainWord": "Trekking",
+      "difficulty": "medium",
+      "forbiddenWords": ["Yürüyüş", "Dağ", "Patika", "Çanta", "Doğa"],
+      "hints": ["Yürüyüş", "Doğa", "Dağ"],
+      "tags": ["trekking", "hiking", "mountain"]
+    }
+  ]
+}

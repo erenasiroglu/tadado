@@ -8,14 +8,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 interface CardProps {
   title: string;
   description: string;
-  type:
-    | "romance"
-    | "travel"
-    | "adventure"
-    | "party"
-    | "dirtyMinds"
-    | "celebrities"
-    | string;
+  type: "romance" | "travel" | "adventure" | string;
   onPress: () => void;
   onBuy: () => void;
   isNew?: boolean;
@@ -41,12 +34,6 @@ export const Card: React.FC<CardProps> = ({
         return ["rgba(56, 20, 93, 0.8)", "rgba(93, 51, 145, 0.8)"];
       case "adventure":
         return ["rgba(34, 139, 34, 0.8)", "rgba(0, 100, 0, 0.8)"];
-      case "party":
-        return ["rgba(255, 165, 0, 0.8)", "rgba(255, 69, 0, 0.8)"];
-      case "dirtyMinds":
-        return ["rgba(217, 33, 81, 0.85)", "rgba(42, 10, 59, 0.9)"];
-      case "celebrities":
-        return ["rgba(255, 215, 0, 0.8)", "rgba(255, 140, 0, 0.8)"];
       default:
         return ["rgba(56, 20, 93, 0.8)", "rgba(93, 51, 145, 0.8)"];
     }
@@ -61,12 +48,6 @@ export const Card: React.FC<CardProps> = ({
         return "#38145D";
       case "adventure":
         return "#0F4C0F";
-      case "party":
-        return "#B8860B";
-      case "dirtyMinds":
-        return "#2a0a3b";
-      case "celebrities":
-        return "#B8860B";
       default:
         return "#38145D";
     }
@@ -80,12 +61,6 @@ export const Card: React.FC<CardProps> = ({
         return "#FBAA12";
       case "adventure":
         return "#90EE90";
-      case "party":
-        return "#FFD700";
-      case "dirtyMinds":
-        return "#FBAA12";
-      case "celebrities":
-        return "#FFD700";
       default:
         return "#FBAA12";
     }
@@ -99,12 +74,6 @@ export const Card: React.FC<CardProps> = ({
         return "#FBAA12";
       case "adventure":
         return "#90EE90";
-      case "party":
-        return "#FFD700";
-      case "dirtyMinds":
-        return "#FBAA12";
-      case "celebrities":
-        return "#FFD700";
       default:
         return "#FBAA12";
     }
@@ -118,12 +87,6 @@ export const Card: React.FC<CardProps> = ({
         return "#6E4EA3";
       case "adventure":
         return "#32CD32";
-      case "party":
-        return "#FF8C00";
-      case "dirtyMinds":
-        return "#D92151";
-      case "celebrities":
-        return "#FFD700";
       default:
         return "#6E4EA3";
     }

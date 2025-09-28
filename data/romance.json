@@ -1,0 +1,73 @@
+{
+  "category": "romance",
+  "name": "Romance",
+  "description": "Aşk, sevgi ve romantik maceralar",
+  "color": "#FF6B9D",
+  "gradient": ["#FF6B9D", "#C44569"],
+  "cards": [
+    {
+      "id": "romance_1",
+      "mainWord": "Aşk",
+      "difficulty": "easy",
+      "forbiddenWords": ["Sevgi", "Kalp", "Öpücük", "Romantik", "Çift"],
+      "hints": ["Duygu", "İlişki", "Tutku"],
+      "tags": ["emotion", "relationship", "feeling"]
+    },
+    {
+      "id": "romance_2",
+      "mainWord": "Evlilik",
+      "difficulty": "medium",
+      "forbiddenWords": ["Nikah", "Düğün", "Yüzük", "Gelin", "Damat"],
+      "hints": ["Birliktelik", "Sözleşme", "Aile"],
+      "tags": ["commitment", "ceremony", "union"]
+    },
+    {
+      "id": "romance_3",
+      "mainWord": "Flört",
+      "difficulty": "easy",
+      "forbiddenWords": ["Buluşma", "Randevu", "Çıkma", "Kur", "Hoşlanma"],
+      "hints": ["Tanışma", "İlişki", "Romantik"],
+      "tags": ["dating", "courtship", "attraction"]
+    },
+    {
+      "id": "romance_4",
+      "mainWord": "Ayrılık",
+      "difficulty": "hard",
+      "forbiddenWords": ["Bitiş", "Veda", "Kopma", "Ayrı", "Son"],
+      "hints": ["Üzüntü", "İlişki", "Ayrılmak"],
+      "tags": ["breakup", "separation", "emotion"]
+    },
+    {
+      "id": "romance_5",
+      "mainWord": "Tutku",
+      "difficulty": "medium",
+      "forbiddenWords": ["Ateş", "Aşk", "İstek", "Arzu", "Heyecan"],
+      "hints": ["Güçlü", "Duygu", "İçten"],
+      "tags": ["passion", "intensity", "desire"]
+    },
+    {
+      "id": "romance_6",
+      "mainWord": "Çikolata",
+      "difficulty": "easy",
+      "forbiddenWords": ["Tatlı", "Kakao", "Valentine", "Hediye", "Çikolatalı"],
+      "hints": ["Romantik", "Hediye", "Tatlı"],
+      "tags": ["gift", "sweet", "romantic"]
+    },
+    {
+      "id": "romance_7",
+      "mainWord": "Gül",
+      "difficulty": "easy",
+      "forbiddenWords": ["Çiçek", "Kırmızı", "Diken", "Kokulu", "Buket"],
+      "hints": ["Romantik", "Çiçek", "Hediye"],
+      "tags": ["flower", "romantic", "gift"]
+    },
+    {
+      "id": "romance_8",
+      "mainWord": "Müzik",
+      "difficulty": "medium",
+      "forbiddenWords": ["Şarkı", "Melodi", "Nota", "Enstrüman", "Konser"],
+      "hints": ["Romantik", "Duygu", "Ses"],
+      "tags": ["music", "romantic", "emotion"]
+    }
+  ]
+}

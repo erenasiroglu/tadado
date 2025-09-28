@@ -1,0 +1,73 @@
+{
+  "category": "travel",
+  "name": "Travel",
+  "description": "Dünyayı keşfet ve yeni yerler bul",
+  "color": "#FFD93D",
+  "gradient": ["#FFD93D", "#FF8C42"],
+  "cards": [
+    {
+      "id": "travel_1",
+      "mainWord": "Seyahat",
+      "difficulty": "easy",
+      "forbiddenWords": ["Yolculuk", "Gezi", "Tatil", "Bavul", "Pasaport"],
+      "hints": ["Hareket", "Yeni", "Yer"],
+      "tags": ["journey", "movement", "exploration"]
+    },
+    {
+      "id": "travel_2",
+      "mainWord": "Uçak",
+      "difficulty": "easy",
+      "forbiddenWords": ["Havacılık", "Pilot", "Kabin", "Motor", "Kanat"],
+      "hints": ["Hava", "Ulaşım", "Yüksek"],
+      "tags": ["airplane", "flight", "transport"]
+    },
+    {
+      "id": "travel_3",
+      "mainWord": "Otel",
+      "difficulty": "easy",
+      "forbiddenWords": ["Konaklama", "Resepsiyon", "Oda", "Rezervasyon", "Misafir"],
+      "hints": ["Kalma", "Yer", "Hizmet"],
+      "tags": ["hotel", "accommodation", "stay"]
+    },
+    {
+      "id": "travel_4",
+      "mainWord": "Plaj",
+      "difficulty": "easy",
+      "forbiddenWords": ["Kum", "Deniz", "Güneş", "Havlu", "Şemsiye"],
+      "hints": ["Deniz", "Tatil", "Yaz"],
+      "tags": ["beach", "sea", "vacation"]
+    },
+    {
+      "id": "travel_5",
+      "mainWord": "Müze",
+      "difficulty": "medium",
+      "forbiddenWords": ["Tarih", "Eser", "Sergi", "Antika", "Kültür"],
+      "hints": ["Tarih", "Eğitim", "Görme"],
+      "tags": ["museum", "history", "culture"]
+    },
+    {
+      "id": "travel_6",
+      "mainWord": "Pasaport",
+      "difficulty": "easy",
+      "forbiddenWords": ["Kimlik", "Belge", "Seyahat", "Ülke", "Vize"],
+      "hints": ["Belge", "Seyahat", "Kimlik"],
+      "tags": ["passport", "document", "travel"]
+    },
+    {
+      "id": "travel_7",
+      "mainWord": "Bavul",
+      "difficulty": "easy",
+      "forbiddenWords": ["Çanta", "Eşya", "Seyahat", "Valiz", "Kıyafet"],
+      "hints": ["Eşya", "Seyahat", "Taşıma"],
+      "tags": ["suitcase", "luggage", "travel"]
+    },
+    {
+      "id": "travel_8",
+      "mainWord": "Harita",
+      "difficulty": "easy",
+      "forbiddenWords": ["Yol", "Yön", "Coğrafya", "Konum", "Mesafe"],
+      "hints": ["Yol", "Bulma", "Yön"],
+      "tags": ["map", "navigation", "location"]
+    }
+  ]
+}
